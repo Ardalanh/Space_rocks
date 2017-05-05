@@ -1,0 +1,119 @@
+[gd_scene load_steps=8 format=1]
+
+[ext_resource path="res://scripts/player.gd" type="Script" id=1]
+[ext_resource path="res://scenes/player_bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://art/PNG/playerShip2_orange.png" type="Texture" id=3]
+[ext_resource path="res://snd/shoot1.wav" type="Sample" id=4]
+[ext_resource path="res://snd/shoot2.wav" type="Sample" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 44.5251
+
+[sub_resource type="SampleLibrary" id=2]
+
+samples/shoot1 = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 4 )
+}
+samples/shoot2 = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 5 )
+}
+
+[node name="player" type="KinematicBody2D"]
+
+transform/pos = Vector2( 242.431, 120.29 )
+transform/scale = Vector2( 0.3, 0.3 )
+z/z = 3
+input/pickable = true
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, -7 )
+shapes/0/trigger = true
+collision/layers = 1
+collision/mask = 1
+collision/margin = 0.08
+script/script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+bullet = ExtResource( 2 )
+
+[node name="ship" type="Sprite" parent="."]
+
+texture = ExtResource( 3 )
+flip_v = true
+
+[node name="collision" type="CollisionShape2D" parent="."]
+
+transform/pos = Vector2( 0, -7 )
+shape = SubResource( 1 )
+trigger = true
+_update_shape_index = 0
+
+[node name="bullet_container" type="Node" parent="."]
+
+[node name="left_gun" type="Position2D" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( 50, 10 )
+
+[node name="right_gun" type="Position2D" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( -50, 10 )
+
+[node name="mid_gun" type="Position2D" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( 0, 45 )
+
+[node name="bullet_rate" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 0.3
+one_shot = true
+autostart = false
+
+[node name="camera" type="Camera2D" parent="."]
+
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = true
+smoothing/speed = 5.0
+drag_margin/left = 0.0
+drag_margin/top = 0.0
+drag_margin/right = 0.0
+drag_margin/bottom = 0.0
+
+[node name="shoot_sound" type="SamplePlayer" parent="."]
+
+config/polyphony = 1
+config/samples = SubResource( 2 )
+default/volume_db = -25.0
+default/pitch_scale = 1.0
+default/pan = 0.0
+default/depth = 0.0
+default/height = 0.0
+default/filter/type = 0
+default/filter/cutoff = 5000.0
+default/filter/resonance = 1.0
+default/filter/gain = 1.0
+default/reverb_room = 2
+default/reverb_send = 0.0
+default/chorus_send = 0.0
+
+
