@@ -41,10 +41,9 @@ script/script = ExtResource( 1 )
 
 [node name="player" parent="." instance=ExtResource( 2 )]
 
-transform/pos = Vector2( 332.936, -136.64 )
-
 [node name="parallax" type="ParallaxBackground" parent="."]
 
+editor/display_folded = true
 layer = -1
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -98,12 +97,15 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="sprite" type="AnimatedSprite" parent="planet"]
 
 frames = SubResource( 1 )
 animation = "default"
-frame = 1
+frame = 12
 playing = true
 
 [node name="wave" type="Node" parent="."]

@@ -9,24 +9,42 @@ var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
 var bounce = 1.1
+var player
+var planet_pos
 
-func _ready():
+
+func start_at(pos, player_obj, planet):
+	set_pos(pos)
 	randomize()
 	set_process(true)
-
-func start_at(pos):
-	set_pos(pos)
+	planet_pos = planet
+	player = player_obj
 
 func _process(delta):
-	look_at(Vector2(0, 0))
 
-	var distance = Vector2(0, 0) - get_pos()
-	var direction = distance.normalized()
-	distance = distance.length()
+	var distance_to_player = player.get_global_pos() - get_pos()
+	var direction_to_player = distance_to_player.normalized()
+	distance_to_player = distance_to_player.length()
 
-	if distance > 600:
-		acc = MAIN_THRUST * direction
+	var distance_to_planet = planet_pos - get_pos()
+	var direction_to_planet = distance_to_planet.normalized()
+	distance_to_planet = distance_to_planet.length()
+
+
+	if distance_to_player > 1200:
+		look_at(planet_pos)
+		acc = MAIN_THRUST * direction_to_planet
+	if distance_to_player < 600:
+		look_at(player.get_global_pos())
+		if distance_to_player > 100:
+			acc = MAIN_THRUST * direction_to_player
+		else:
+			acc = vel * -1
+	elif distance_to_planet > 600:
+		look_at(planet_pos)
+		acc = MAIN_THRUST * direction_to_planet
 	else:
+		look_at(planet_pos)
 		acc = vel * -1
 
 	vel += acc * delta
