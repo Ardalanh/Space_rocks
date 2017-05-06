@@ -28,7 +28,6 @@ samples/shoot2 = {
 
 [node name="player" type="KinematicBody2D"]
 
-transform/pos = Vector2( 242.431, 120.29 )
 transform/scale = Vector2( 0.3, 0.3 )
 z/z = 3
 input/pickable = true
