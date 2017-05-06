@@ -55,6 +55,10 @@ func _fixed_process(delta):
 		acc = Vector2(0, 0)
 
 	vel += acc * delta
+	
+	if Input.is_action_pressed("player_thrust_rev"): # to stop the ship\ put reverse force
+		vel += vel.normalized() * -MAIN_THRUST / 4 * delta
+	
 	if vel.length() > MAX_VEL:
 		vel = vel.normalized() * MAX_VEL #max
 	move(vel * delta)
