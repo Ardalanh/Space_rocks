@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+const MAX_CAMERA = 600
+
 const MAIN_THRUST = 2000/3
 const MAX_VEL = 1000/3
 export (PackedScene) var bullet
@@ -13,7 +15,6 @@ var rot = 0
 var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
-var power_up = 1
 var shoot_key_pressed = false
 
 func _ready():
@@ -29,11 +30,6 @@ func _input(event):
 		shoot_key_pressed = false
 	if Input.is_action_pressed("player_shoot"):
 		shoot_key_pressed = true
-
-	if event.is_action_pressed("player_power_up_1"):
-		power_up = 1
-	if event.is_action_pressed("player_power_up_2"):
-		power_up = 2
 
 func _process(delta):
 
@@ -55,21 +51,21 @@ func _fixed_process(delta):
 		acc = Vector2(0, 0)
 
 	vel += acc * delta
+
+	if Input.is_action_pressed("player_thrust_rev"): # to stop the ship\ put reverse force
+		vel += vel.normalized() * -MAIN_THRUST / 2 * delta
+
 	if vel.length() > MAX_VEL:
 		vel = vel.normalized() * MAX_VEL #max
-	move(vel * delta)
+	var motion = move(vel * delta)
+	if is_colliding():
+		var n = get_collision_normal()
+		vel = n.slide(vel)
+		move(n.slide(motion))
 
 func shoot():
 	bullet_rate.start()
-	if power_up == 1:
-		var b = bullet.instance()
-		bullet_container.add_child(b)
-		b.start_at(get_rot(), get_node("mid_gun").get_global_pos())
-	elif power_up == 2:
-		var b1 = bullet.instance()
-		var b2 = bullet.instance()
-		bullet_container.add_child(b1)
-		bullet_container.add_child(b2)
-		b1.start_at(get_rot(), get_node("left_gun").get_global_pos())
-		b2.start_at(get_rot(), get_node("right_gun").get_global_pos())
+	var b = bullet.instance()
+	bullet_container.add_child(b)
+	b.start_at(get_rot(), get_node("mid_gun").get_global_pos())
 	shoot_sound.play("shoot%s" % (str(randi()%2 + 1)) , true)
