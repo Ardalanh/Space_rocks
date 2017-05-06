@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=1]
+
+[ext_resource path="res://scripts/enemy_bullet.gd" type="Script" id=1]
+[ext_resource path="res://art/PNG/Lasers/laserRed16.png" type="Texture" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 6.34104
+height = 41.3183
+
+[node name="enemy_bullet" type="Area2D"]
+
+transform/scale = Vector2( 0.3, 0.3 )
+input/pickable = true
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+script/script = ExtResource( 1 )
+
+[node name="sprite" type="Sprite" parent="."]
+
+visibility/blend_mode = 1
+texture = ExtResource( 2 )
+
+[node name="collision" type="CollisionShape2D" parent="."]
+
+visibility/visible = false
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="animation" type="Tween" parent="."]
+
+playback/process_mode = 1
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[connection signal="tween_complete" from="animation" to="." method="_on_animation_tween_complete"]
+
+
