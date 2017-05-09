@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://scripts/enemy1.gd" type="Script" id=1]
 [ext_resource path="res://scenes/enemy_bullet.tscn" type="PackedScene" id=2]
@@ -9,11 +9,24 @@
 custom_solver_bias = 0.0
 radius = 49.6326
 
+[sub_resource type="StyleBoxFlat" id=2]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+bg_color = Color( 1, 0, 0, 1 )
+light_color = Color( 1, 0, 0, 1 )
+dark_color = Color( 1, 0, 0, 1 )
+border_size = 0
+border_blend = false
+draw_bg = true
+
 [node name="enemy1" type="KinematicBody2D" groups=[
 "enemy",
 ]]
 
-transform/pos = Vector2( 455.038, 199.158 )
+transform/pos = Vector2( 453.611, 199.158 )
 transform/scale = Vector2( 0.5, 0.5 )
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
@@ -34,6 +47,7 @@ texture = ExtResource( 3 )
 
 [node name="collision" type="CollisionShape2D" parent="."]
 
+visibility/visible = false
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
@@ -48,6 +62,46 @@ transform/pos = Vector2( 0, 40 )
 
 process_mode = 1
 wait_time = 2.0
+one_shot = true
+autostart = false
+
+[node name="control" type="Control" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 40.0
+margin/bottom = 40.0
+
+[node name="hp_bar" type="ProgressBar" parent="control"]
+
+rect/scale = Vector2( 1, 0.5 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -40.0
+margin/top = -55.0
+margin/right = 40.0
+margin/bottom = -39.0
+custom_styles/fg = SubResource( 2 )
+custom_colors/font_color = Color( 0, 1, 0, 1 )
+range/min = 0.0
+range/max = 1000.0
+range/step = 1.0
+range/page = 0.0
+range/value = 500.0
+range/exp_edit = false
+range/rounded = false
+percent/visible = false
+
+[node name="agro_time" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 1.0
 one_shot = true
 autostart = false
 

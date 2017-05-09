@@ -1,147 +1,44 @@
-[gd_scene load_steps=29 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://scripts/main.gd" type="Script" id=1]
-[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://art/Backgrounds/EmptyStarfield.tex" type="Texture" id=3]
-[ext_resource path="res://scripts/planet.gd" type="Script" id=4]
-[ext_resource path="res://art/planet/00.png" type="Texture" id=5]
-[ext_resource path="res://art/planet/01.png" type="Texture" id=6]
-[ext_resource path="res://art/planet/02.png" type="Texture" id=7]
-[ext_resource path="res://art/planet/03.png" type="Texture" id=8]
-[ext_resource path="res://art/planet/04.png" type="Texture" id=9]
-[ext_resource path="res://art/planet/05.png" type="Texture" id=10]
-[ext_resource path="res://art/planet/06.png" type="Texture" id=11]
-[ext_resource path="res://art/planet/07.png" type="Texture" id=12]
-[ext_resource path="res://art/planet/08.png" type="Texture" id=13]
-[ext_resource path="res://art/planet/09.png" type="Texture" id=14]
-[ext_resource path="res://art/planet/10.png" type="Texture" id=15]
-[ext_resource path="res://art/planet/11.png" type="Texture" id=16]
-[ext_resource path="res://art/planet/12.png" type="Texture" id=17]
-[ext_resource path="res://art/planet/13.png" type="Texture" id=18]
-[ext_resource path="res://art/planet/14.png" type="Texture" id=19]
-[ext_resource path="res://art/planet/15.png" type="Texture" id=20]
-[ext_resource path="res://art/planet/16.png" type="Texture" id=21]
-[ext_resource path="res://art/planet/17.png" type="Texture" id=22]
-[ext_resource path="res://art/planet/18.png" type="Texture" id=23]
-[ext_resource path="res://art/planet/19.png" type="Texture" id=24]
-[ext_resource path="res://scripts/wave.gd" type="Script" id=25]
-[ext_resource path="res://scenes/enemy1.tscn" type="PackedScene" id=26]
-
-[sub_resource type="CircleShape2D" id=1]
-
-custom_solver_bias = 0.0
-radius = 235.73
-
-[sub_resource type="SpriteFrames" id=2]
-
-animations = [ {
-"frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ],
-"loop": true,
-"name": "default",
-"speed": 20.0
-} ]
+[ext_resource path="res://scenes/hud.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/parallax.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/planet.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/wave.tscn" type="PackedScene" id=6]
 
 [node name="main" type="Node"]
 
 script/script = ExtResource( 1 )
 
-[node name="player" parent="." instance=ExtResource( 2 )]
+[node name="hud" parent="." instance=ExtResource( 2 )]
 
-[node name="parallax" type="ParallaxBackground" parent="."]
+[node name="player" parent="." instance=ExtResource( 3 )]
 
-editor/display_folded = true
-layer = -1
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-scroll/offset = Vector2( 0, 0 )
-scroll/base_offset = Vector2( 0, 0 )
-scroll/base_scale = Vector2( 1, 1 )
-scroll/limit_begin = Vector2( 0, 0 )
-scroll/limit_end = Vector2( 0, 0 )
-scroll/ignore_camera_zoom = false
+[node name="parallax" parent="." instance=ExtResource( 4 )]
 
-[node name="layer1" type="ParallaxLayer" parent="parallax"]
+[node name="planet" parent="." instance=ExtResource( 5 )]
 
 editor/display_folded = true
-motion/scale = Vector2( 0.1, 0.1 )
-motion/offset = Vector2( 0, 0 )
-motion/mirroring = Vector2( 0, 0 )
 
-[node name="sprite" type="Sprite" parent="parallax/layer1"]
+[node name="wave" parent="." instance=ExtResource( 6 )]
 
-texture = ExtResource( 3 )
-flip_h = true
-modulate = Color( 0.21875, 0.743652, 1, 1 )
-region = true
-region_rect = Rect2( 0, 0, 20480, 11180 )
+[node name="restart_timer" type="Timer" parent="."]
 
-[node name="layer2" type="ParallaxLayer" parent="parallax"]
-
-editor/display_folded = true
-visibility/opacity = 0.8
-z/z = 3
-z/relative = false
-motion/scale = Vector2( 0.2, 0.2 )
-motion/offset = Vector2( 0, 0 )
-motion/mirroring = Vector2( 0, 0 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="sprite" type="Sprite" parent="parallax/layer2"]
-
-visibility/blend_mode = 1
-texture = ExtResource( 3 )
-region = true
-region_rect = Rect2( 0, 0, 20480, 11180 )
-
-[node name="planet" type="StaticBody2D" parent="."]
-
-input/pickable = false
-shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
-shapes/0/trigger = false
-collision/layers = 1
-collision/mask = 1
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
-script/script = ExtResource( 4 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="sprite" type="AnimatedSprite" parent="planet"]
-
-frames = SubResource( 2 )
-animation = "default"
-frame = 12
-playing = true
-
-[node name="collision" type="CollisionShape2D" parent="planet"]
-
-shape = SubResource( 1 )
-trigger = false
-_update_shape_index = 0
-
-[node name="wave" type="Node" parent="."]
-
-script/script = ExtResource( 25 )
-enemy = ExtResource( 26 )
-
-[node name="spawn_pos" type="Position2D" parent="wave"]
-
-transform/pos = Vector2( 1000, 0 )
-
-[node name="enemy_container" type="Node" parent="wave"]
-
-[node name="spawn_rate" type="Timer" parent="wave"]
-
+process/pause_mode = 2
 process_mode = 1
-wait_time = 0.1
-one_shot = true
+wait_time = 5.0
+one_shot = false
 autostart = false
+
+[connection signal="next_wave" from="hud" to="." method="_on_hud_next_wave"]
+
+[connection signal="player_dead" from="player" to="." method="_on_player_player_dead"]
+
+[connection signal="number_of_enemies" from="wave" to="hud" method="_on_wave_number_of_enemies"]
+
+[connection signal="wave_done" from="wave" to="." method="_on_wave_wave_done"]
+
+[connection signal="timeout" from="restart_timer" to="." method="_on_restart_timer_timeout"]
 
 

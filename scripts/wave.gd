@@ -1,5 +1,8 @@
 extends Node
 
+signal wave_done
+signal number_of_enemies
+
 export (PackedScene) var enemy
 var explosion = preload("res://scenes/explosion.tscn")
 
@@ -14,9 +17,11 @@ var theta = 0
 
 func _ready():
 	spawn_node.set_pos(Vector2(r, 0))
-	pass
 
 func start_spawning(player_obj, planet):
+	number_of_units = 9
+	r = 1500
+	theta = 0
 	set_process(true)
 	player =  player_obj
 	planet_pos = planet
@@ -30,9 +35,9 @@ func _process(delta):
 		spawn_rate.start()
 		number_of_units -= 1
 		change_spawn_pos()
-
-	if number_of_units <= 0:
-		number_of_units = 10
+	emit_signal("number_of_enemies", enemy_container.get_child_count())
+	if no_enemies():
+		emit_signal("wave_done")
 		set_process(false)
 
 func change_spawn_pos():
@@ -46,3 +51,10 @@ func _on_enemy_explode(expl_pos, expl_vel):
 	add_child(expl)
 	expl.set_pos(expl_pos)
 	expl.vel = expl_vel
+
+
+func no_enemies():
+	if enemy_container.get_child_count() == 0:
+		return true
+	else:
+		return false

@@ -41,6 +41,8 @@ playback/active = false
 playback/repeat = false
 playback/speed = 1.0
 
+[connection signal="body_enter" from="." to="." method="_on_enemy_bullet_body_enter"]
+
 [connection signal="tween_complete" from="animation" to="." method="_on_animation_tween_complete"]
 
 

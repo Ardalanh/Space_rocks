@@ -1,6 +1,7 @@
 extends Area2D
 
 var vel = Vector2()
+var damage = 10
 const speed = 1000
 onready var effect = get_node("animation")
 onready var sprite = get_node("sprite")
@@ -23,7 +24,7 @@ func _process(delta):
 func _on_animation_tween_complete( object, key ):
 	queue_free()
 
-#func _on_player_bullet_body_enter( body ):
-#	if body.is_in_group("enemy"):
-#		queue_free()
-#		body.explode()
+func _on_enemy_bullet_body_enter( body ):
+	if body.is_in_group("player"):
+		queue_free()
+		body.take_damage(damage)
