@@ -5,6 +5,8 @@ var game_over = false
 var paused = false
 var current_scene = null
 var new_scene = null
+var planetHP = 0
+var PLANET_MAX_HP = 3000
 
 func _ready():
 	var root = get_tree().get_root()
@@ -21,4 +23,4 @@ func goto_scene(path):
 func new_game():
 	game_over = false
 	wave_num = 0
-	goto_scene("res://scenes/main.tscn")
+	goto_scene("res://scenes/game_loop.tscn")

@@ -1,7 +1,7 @@
 extends Area2D
 
 var vel = Vector2()
-var damage = 10
+var damage = 0
 const speed = 1000
 onready var effect = get_node("animation")
 onready var sprite = get_node("sprite")

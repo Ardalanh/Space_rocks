@@ -4,8 +4,6 @@ signal player_dead
 
 const MAX_CAMERA = 600
 
-const MAIN_THRUST = 1200
-const MAX_VEL = 300
 export (PackedScene) var bullet
 onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate = get_node("bullet_rate")
@@ -19,12 +17,17 @@ var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
 var shoot_key_pressed = false
-var damage = 1000
-var Health_point = 100
 var Dead = false
 
+var MAIN_THRUST = 1200
+var MAX_VEL = 300
+var damage = 1000
+var MAX_HP = 500
+var health_point = MAX_HP
+
 func _ready():
-	HP_BAR.set_val(Health_point)
+	HP_BAR.set_max(MAX_HP)
+	HP_BAR.set_val(health_point)
 	screen_size = get_viewport_rect().size
 	pos = screen_size / 2
 	set_pos(pos)
@@ -40,9 +43,9 @@ func _unhandled_input(event):
 
 func _process(delta):
 	screen_size = get_viewport_rect().size
-
 	if shoot_key_pressed  and bullet_rate.get_time_left() == 0:
 		shoot()
+	HP_BAR.set_val(health_point)
 
 func _fixed_process(delta):
 	var mouse_pos = get_global_mouse_pos()
@@ -81,9 +84,8 @@ func shoot():
 	shoot_sound.play("shoot%s" % (str(randi()%2 + 1)) , true)
 
 func take_damage(damage):
-	Health_point = Health_point - damage
-	HP_BAR.set_val(Health_point)
-	if Health_point <= 0:
+	health_point = health_point - damage
+	if health_point <= 0:
 		Dead = true
 		emit_signal("player_dead")
 

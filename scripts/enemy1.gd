@@ -23,15 +23,15 @@ var acc = Vector2(0, 0)
 var bounce = 0.8
 var player
 var planet_pos
-var Health_Point = 1000
+var health_point = 1000
+var damage = 50
 
-func start_at(pos, player_obj, planet):
-	HP_BAR.set_val(Health_Point)
+func start_at(pos, planet):
+	HP_BAR.set_val(health_point)
 	set_pos(pos)
 	randomize()
 	set_process(true)
 	planet_pos = planet
-	player = player_obj
 	look_at(planet_pos)
 	player_agro.set_wait_time(PLAYER_AGRO_TIME)
 
@@ -53,19 +53,10 @@ func _process(delta):
 		move(get_collision_normal().slide(motion))
 
 func find_target():
-	if player.Dead:
-		return planet_pos
-
 	var self_pos = get_pos()
 	var distance_to_planet = (planet_pos - self_pos).length()
-	var player_pos = player.get_global_pos()
-	var distance_to_player = (player_pos - self_pos).length()
 
-	if distance_to_player < PLAYER_AGRO_RANGE or player_agro.get_time_left() == 0:
-		player_agro.start()
-		return player_pos
-	else:
-		return planet_pos
+	return planet_pos
 
 func follow_target(delta, target_pos):
 	var target_dis = target_pos - get_pos()
@@ -87,6 +78,7 @@ func shoot():
 	bullet_rate.start()
 	var b = bullet.instance()
 	bullet_container.add_child(b)
+	b.damage = damage
 	b.start_at(get_rot() + rand_range(-PI/25, PI/25), get_node("gun").get_global_pos())
 
 func explode():
@@ -94,7 +86,8 @@ func explode():
 	emit_signal("explode", get_pos(), vel)
 
 func take_damage(damage):
-	Health_Point = Health_Point - damage
-	HP_BAR.set_val(Health_Point)
-	if Health_Point <= 0:
+#	calculat_damage(damage, type_damage, armor_type)# return damage
+	health_point = health_point - damage
+	HP_BAR.set_val(health_point)
+	if health_point <= 0:
 		explode()

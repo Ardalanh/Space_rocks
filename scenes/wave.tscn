@@ -1,12 +1,10 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=2 format=1]
 
 [ext_resource path="res://scripts/wave.gd" type="Script" id=1]
-[ext_resource path="res://scenes/enemy1.tscn" type="PackedScene" id=2]
 
 [node name="wave" type="Node"]
 
 script/script = ExtResource( 1 )
-enemy = ExtResource( 2 )
 
 [node name="spawn_pos" type="Position2D" parent="."]
 
