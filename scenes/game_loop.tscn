@@ -33,6 +33,8 @@ autostart = false
 
 [connection signal="wave_timeout" from="hud" to="wave" method="_on_hud_wave_timeout"]
 
+[connection signal="wave_timeout" from="hud" to="." method="_on_hud_wave_timeout"]
+
 [connection signal="Dead" from="planet" to="." method="_on_planet_Dead"]
 
 [connection signal="planet_pos_signal" from="planet" to="wave" method="_on_planet_planet_pos_signal"]

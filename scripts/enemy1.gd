@@ -2,6 +2,13 @@ extends KinematicBody2D
 
 signal explode
 
+enum _States{follow_planet,
+			 attack_planet,
+			 find_target,
+			 chase_target,
+			 chase_attack,
+			 attack_action}
+
 export (PackedScene) var bullet
 onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate = get_node("bullet_rate")
@@ -12,8 +19,10 @@ const MAIN_THRUST = 300
 const MAX_VEL = 150
 const PLAYER_AGRO_RANGE = 500
 const PLAYER_AGRO_TIME = 0.5
+const PLANET_AGRO_RANGE = 500
 const ROT_SPEED = 5
 const ACCURACY = 5
+const STOPING_FRICTION = 0.5
 
 var screen_size
 var rot = 0
@@ -21,10 +30,11 @@ var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
 var bounce = 0.8
-var player
+var target
 var planet_pos
 var health_point = 1000
 var damage = 50
+var state = _States.follow_planet
 
 func start_at(pos, planet):
 	HP_BAR.set_val(health_point)
@@ -36,12 +46,23 @@ func start_at(pos, planet):
 	player_agro.set_wait_time(PLAYER_AGRO_TIME)
 
 func _process(delta):
-	acc = follow_target(delta, find_target())
+	if state == _States.follow_planet:
+		follow_planet_state(delta)
+	elif state == _States.attack_planet:
+		attack_planet_state(delta)
+	elif state == _States.find_target:
+		find_target_state()
+	elif state == _States.chase_target:
+		chase_target_state()
+	elif state == _States.chase_attack:
+		chase_attack_state()
+	elif state == _States.attack_action:
+		attack_action_state()
 
+#States will set the acc variable
 	vel += acc * delta
 	if vel.length() > MAX_VEL:
 		vel = vel.normalized() * MAX_VEL
-
 	var motion = move(vel * delta)
 
 	if is_colliding():
@@ -52,11 +73,50 @@ func _process(delta):
 		vel = vel.tangent() * spread * -1
 		move(get_collision_normal().slide(motion))
 
-func find_target():
-	var self_pos = get_pos()
-	var distance_to_planet = (planet_pos - self_pos).length()
+func follow_planet_state(delta):
+	set_acceleration(planet_pos)
 
-	return planet_pos
+	look_at_target(delta, planet_pos)
+
+	var distance_to_planet = (planet_pos - get_pos()).length()
+	if distance_to_planet < PLANET_AGRO_RANGE:
+		state = _States.attack_planet
+
+
+func attack_planet_state(delta):
+	set_acceleration(planet_pos, false) #false for decelerating
+
+	look_at_target(delta, planet_pos)
+	var distance_to_planet = (planet_pos - get_pos()).length()
+	if distance_to_planet > PLANET_AGRO_RANGE:
+		state = _States.follow_planet
+
+func find_target_state():
+	pass
+
+func chase_target_state():
+	pass
+
+func chase_attack_state():
+	pass
+
+func attack_action_state():
+	pass
+
+
+func look_at_target(delta, target_pos):
+	var angle_to_target = get_angle_to(target_pos)
+	rotate(angle_to_target * ROT_SPEED * delta)
+
+func set_acceleration(target_pos, is_thrusting=true):# is_thrusting is for acceleration or deceleration
+	var distance_to_target = target_pos - get_pos()
+	var direction_to_target = distance_to_target.normalized()
+	distance_to_target = distance_to_target.length()
+
+	if is_thrusting:
+		acc = direction_to_target * MAIN_THRUST
+	else:
+		acc = -vel * STOPING_FRICTION
 
 func follow_target(delta, target_pos):
 	var target_dis = target_pos - get_pos()

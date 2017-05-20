@@ -19,46 +19,46 @@ func _ready():
 
 func _process(delta):
 	if state == _States.start:
-		start() #Start screen of explaining the game or anything
+		start_state() #Start screen of explaining the game or anything
 	elif state == _States.wait:
-		wait()
+		wait_state()
 	elif state == _States.spawn:
-		spawn()
+		spawn_state()
 	elif state == _States.def:
-		def()
+		def_state()
 	elif state == _States.game_over:
-		game_over()
+		game_over_state()
 	elif state == _States.victory:
 		victory()
 	elif state == _States.lost:
 		lost()
 
-func start():
+func start_state():
 	state =  _States.spawn
 
-func wait():
+func wait_state():
 	pass
 
-func spawn():
+func spawn_state():
 	if global.wave_num < 3:
 		HUD.next_wave()
 		state = _States.wait
 	else:
 		state = _States.game_over
 
-func def():
+func def_state():
 	pass
 
-func game_over():
+func game_over_state():
 	if planet_live:
 		state = _States.victory
 	else:
 		state = _States.lost
 
-func victory():
+func victory_state():
 	print("we've done it")
 
-func lost():
+func lost_state():
 	HUD.show_message("Game Over")
 	get_node("restart_timer").start()
 	get_tree().set_pause(true)
@@ -77,3 +77,6 @@ func _on_wave_wave_done():
 func _on_planet_Dead():
 	planet_live = false
 	state = _States.game_over
+
+func _on_hud_wave_timeout():
+	state = _States.def
