@@ -29,9 +29,9 @@ func _process(delta):
 	elif state == _States.game_over:
 		game_over_state()
 	elif state == _States.victory:
-		victory()
+		victory_state()
 	elif state == _States.lost:
-		lost()
+		lost_state()
 
 func start_state():
 	state =  _States.spawn
