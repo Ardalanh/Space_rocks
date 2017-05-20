@@ -4,4 +4,4 @@ func _ready():
 	pass
 
 func Generate(index):
-	return get_child(index).duplicate()
+	return load("res://scenes/enemy%d.tscn"%index).instance()

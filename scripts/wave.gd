@@ -46,7 +46,7 @@ func no_enemies():
 
 func spawn():
 	if spawn_rate.get_time_left() == 0 and number_of_units > 0:
-		var e = enemy_factory.Generate(global.wave_num - 1)
+		var e = enemy_factory.Generate(global.wave_num)
 		enemy_container.add_child(e)
 		e.start_at(spawn_node.get_global_pos(), planet_pos)
 		e.connect("explode", self, "_on_enemy_explode")

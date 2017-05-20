@@ -151,3 +151,6 @@ func take_damage(damage):
 	HP_BAR.set_val(health_point)
 	if health_point <= 0:
 		explode()
+
+func _on_Area2D_body_enter( body ):
+	print(body)
