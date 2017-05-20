@@ -1,18 +1,22 @@
 extends CanvasLayer
 
-signal wave_timeout
+signal next_wave
+signal Main_Menu
 
-var screen
+var Menu = false
 
 onready var wave_label = get_node("next_wave")
 onready var enemy_remain = get_node("enemy_remain")
 onready var wave_timer = get_node("next_wave/next_wave_timer")
-onready var planet_hp = get_node("control/planet_hp")
-onready var planet_hp_size = planet_hp.get_rect().size
+onready var ProgressBar = get_node("Control/ProgressBar")
 
 func _ready():
 	set_process_input(true)
-	set_process(true)
+	ProgressBar.set_max(3000)
+	set_fixed_process(true)
+
+func _fixed_process(delta):
+	ProgressBar.set_value(global.planetHP)
 
 func _input(event):
 	if event.is_action_pressed("pause_toggle"):
@@ -24,15 +28,9 @@ func _input(event):
 func next_wave():
 	wave_label.show()
 	wave_timer.start()
+	set_process(true)
 
 func _process(delta):
-	screen = get_viewport().get_rect().size
-	if planet_hp.get_max() != global.planet_max_hp:
-		planet_hp.set_max(global.planet_max_hp)
-	planet_hp.set_value(global.planetHP)
-	planet_hp.set_pos(Vector2(screen.x/2 - planet_hp_size.x/2,
-							screen.y - planet_hp_size.y-10))
-	get_node("control/planet_hp/hp").set_text(str(global.planetHP))
 	wave_label.set_text("Next wave in: " + str(int(wave_timer.get_time_left())))
 
 func show_message(text):
@@ -40,15 +38,16 @@ func show_message(text):
 	get_node("message").show()
 	get_node("message_timer").start()
 
+
 func _on_message_timer_timeout():
 	get_node("message").hide()
 	get_node("message").set_text('')
 
 func _on_next_wave_timer_timeout():
-	global.wave_num += 1
-	show_message("Wave %s" % global.wave_num)
+	emit_signal("next_wave")
 	wave_label.hide()
-	emit_signal("wave_timeout")
+	set_process(false)
 
 func _on_wave_number_of_enemies(num):
 	enemy_remain.set_text(str(num))
+

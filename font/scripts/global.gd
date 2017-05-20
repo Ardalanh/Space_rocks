@@ -6,7 +6,6 @@ var paused = false
 var current_scene = null
 var new_scene = null
 var planetHP = 0
-var planet_max_hp = 0
 
 func _ready():
 	var root = get_tree().get_root()
