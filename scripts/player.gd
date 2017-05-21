@@ -70,7 +70,10 @@ func _fixed_process(delta):
 		vel = vel.normalized() * MAX_VEL #max
 	var motion = move(vel * delta)
 	if is_colliding():
+		var coll = get_collider()
 		var n = get_collision_normal()
+		if coll.is_in_group('enemy'):
+			coll.vel += vel
 		vel = n.slide(vel)
 		move(n.slide(motion))
 
