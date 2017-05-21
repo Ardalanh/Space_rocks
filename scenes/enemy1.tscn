@@ -25,7 +25,7 @@ draw_bg = true
 [sub_resource type="CircleShape2D" id=3]
 
 custom_solver_bias = 0.0
-radius = 171.996
+radius = 200.0
 
 [node name="enemy1" type="KinematicBody2D" groups=[
 "enemy",
@@ -110,7 +110,7 @@ wait_time = 1.0
 one_shot = true
 autostart = false
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="agro_range" type="Area2D" parent="."]
 
 input/pickable = true
 shapes/0/shape = SubResource( 3 )
@@ -123,12 +123,12 @@ angular_damp = 1.0
 collision/layers = 2
 collision/mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="collision" type="CollisionShape2D" parent="agro_range"]
 
 shape = SubResource( 3 )
 trigger = true
 _update_shape_index = 0
 
-[connection signal="body_enter" from="Area2D" to="." method="_on_Area2D_body_enter"]
+[connection signal="body_enter" from="agro_range" to="." method="_on_Area2D_body_enter"]
 
 

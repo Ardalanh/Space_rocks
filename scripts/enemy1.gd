@@ -20,6 +20,8 @@ const MAX_VEL = 150
 const PLAYER_AGRO_RANGE = 500
 const PLAYER_AGRO_TIME = 0.5
 const PLANET_AGRO_RANGE = 500
+const MAIN_TARGET_AGRO_RANGE = 600
+const MAIN_TARGET_ATTACK_RANGE = 400
 const ROT_SPEED = 5
 const ACCURACY = 5
 const STOPING_FRICTION = 0.5
@@ -30,10 +32,13 @@ var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
 var bounce = 0.8
-var target
+
+var target_list = []
+var main_target
 var planet_pos
+
 var health_point = 1000
-var damage = 50
+var damage = 1
 var state = _States.follow_planet
 
 func start_at(pos, planet):
@@ -53,9 +58,9 @@ func _process(delta):
 	elif state == _States.find_target:
 		find_target_state()
 	elif state == _States.chase_target:
-		chase_target_state()
+		chase_target_state(delta)
 	elif state == _States.chase_attack:
-		chase_attack_state()
+		chase_attack_state(delta)
 	elif state == _States.attack_action:
 		attack_action_state()
 
@@ -83,22 +88,52 @@ func follow_planet_state(delta):
 		state = _States.attack_planet
 
 
+
 func attack_planet_state(delta):
 	set_acceleration(planet_pos, false) #false for decelerating
 
 	look_at_target(delta, planet_pos)
+	shoot()
 	var distance_to_planet = (planet_pos - get_pos()).length()
 	if distance_to_planet > PLANET_AGRO_RANGE:
 		state = _States.follow_planet
 
 func find_target_state():
-	pass
+	print(target_list)
+	if target_list.empty():
+		state = _States.follow_planet
+		return 0
+	for target in target_list:
+		if target.get_name() == 'player':
+			main_target = target
 
-func chase_target_state():
-	pass
+	state = _States.chase_target
 
-func chase_attack_state():
-	pass
+func chase_target_state(delta):
+	var main_target_pos = main_target.get_pos()
+	set_acceleration(main_target_pos)
+
+	look_at_target(delta, main_target_pos)
+
+	var distance_to_main_target = (main_target_pos - get_pos()).length()
+	if distance_to_main_target < MAIN_TARGET_ATTACK_RANGE:
+		state = _States.chase_attack
+	elif distance_to_main_target > MAIN_TARGET_AGRO_RANGE:
+		target_list.erase(main_target)
+		state = _States.find_target
+
+
+func chase_attack_state(delta):
+	var main_target_pos = main_target.get_pos()
+	set_acceleration(main_target_pos)
+
+	look_at_target(delta, main_target_pos)
+
+	var distance_to_main_target = (main_target_pos - get_pos()).length()
+	if distance_to_main_target < MAIN_TARGET_ATTACK_RANGE:
+		shoot()
+	else:
+		state = _States.chase_target
 
 func attack_action_state():
 	pass
@@ -135,11 +170,13 @@ func follow_target(delta, target_pos):
 		return target_dir * MAIN_THRUST
 
 func shoot():
-	bullet_rate.start()
-	var b = bullet.instance()
-	bullet_container.add_child(b)
-	b.damage = damage
-	b.start_at(get_rot() + rand_range(-PI/25, PI/25), get_node("gun").get_global_pos())
+
+	if bullet_rate.get_time_left() == 0:
+		bullet_rate.start()
+		var b = bullet.instance()
+		bullet_container.add_child(b)
+		b.damage = damage
+		b.start_at(get_rot() + rand_range(-PI/36, PI/36), get_node("gun").get_global_pos())
 
 func explode():
 	queue_free()
@@ -153,4 +190,7 @@ func take_damage(damage):
 		explode()
 
 func _on_Area2D_body_enter( body ):
-	print(body)
+	if body.is_in_group("player") :
+		state = _States.find_target
+		if not target_list.has(body):
+			target_list.append(body)

@@ -55,7 +55,7 @@ func spawn():
 		change_spawn_pos()
 
 func _on_hud_wave_timeout():
-	number_of_units = 9
+	number_of_units = 1
 	r = 1500
 	theta = 0
 	set_process(true)
