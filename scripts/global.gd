@@ -24,3 +24,6 @@ func new_game():
 	game_over = false
 	wave_num = 0
 	goto_scene("res://scenes/game_loop.tscn")
+
+func enemy_factory_generate(index):
+	return load("res://scenes/creep_scenes/enemy%d.tscn"%index).instance()

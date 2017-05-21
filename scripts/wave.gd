@@ -4,7 +4,7 @@ signal wave_done
 signal number_of_enemies
 
 var explosion = preload("res://scenes/explosion.tscn")
-var enemy_factory = preload("res://scenes/enemy_wave.tscn").instance()
+#var enemy_factory = preload("res://scenes/enemy_wave.tscn").instance()
 
 onready var enemy_container = get_node("enemy_container")
 onready var spawn_rate = get_node("spawn_rate")
@@ -46,7 +46,7 @@ func no_enemies():
 
 func spawn():
 	if spawn_rate.get_time_left() == 0 and number_of_units > 0:
-		var e = enemy_factory.Generate(global.wave_num)
+		var e = global.enemy_factory_generate(global.wave_num)
 		enemy_container.add_child(e)
 		e.start_at(spawn_node.get_global_pos(), planet_pos)
 		e.connect("explode", self, "_on_enemy_explode")
@@ -55,7 +55,7 @@ func spawn():
 		change_spawn_pos()
 
 func _on_hud_wave_timeout():
-	number_of_units = 1
+	number_of_units = 9
 	r = 1500
 	theta = 0
 	set_process(true)

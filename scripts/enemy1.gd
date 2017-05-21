@@ -99,7 +99,6 @@ func attack_planet_state(delta):
 		state = _States.follow_planet
 
 func find_target_state():
-	print(target_list)
 	if target_list.empty():
 		state = _States.follow_planet
 		return 0
