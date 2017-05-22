@@ -80,3 +80,6 @@ func _on_planet_Dead():
 
 func _on_hud_wave_timeout():
 	state = _States.def
+
+func _on_player_player_dead():
+	pass

@@ -73,17 +73,7 @@ _update_shape_index = 0
 
 [node name="bullet_container" type="Node" parent="."]
 
-[node name="left_gun" type="Position2D" parent="."]
-
-visibility/visible = false
-transform/pos = Vector2( 50, 10 )
-
-[node name="right_gun" type="Position2D" parent="."]
-
-visibility/visible = false
-transform/pos = Vector2( -50, 10 )
-
-[node name="mid_gun" type="Position2D" parent="."]
+[node name="gun" type="Position2D" parent="."]
 
 visibility/visible = false
 transform/pos = Vector2( 0, 45 )
