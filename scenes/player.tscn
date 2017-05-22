@@ -48,7 +48,7 @@ z/z = 3
 input/pickable = true
 shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, -7 )
-shapes/0/trigger = true
+shapes/0/trigger = false
 collision/layers = 3
 collision/mask = 3
 collision/margin = 0.08
@@ -68,7 +68,7 @@ flip_v = true
 visibility/visible = false
 transform/pos = Vector2( 0, -7 )
 shape = SubResource( 1 )
-trigger = true
+trigger = false
 _update_shape_index = 0
 
 [node name="bullet_container" type="Node" parent="."]
