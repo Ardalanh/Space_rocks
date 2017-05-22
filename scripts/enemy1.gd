@@ -38,7 +38,7 @@ var main_target
 var planet_pos
 
 var health_point = 1000
-var damage = 10
+var damage = 100
 var state = _States.follow_planet
 
 func start_at(pos, planet):
@@ -109,27 +109,38 @@ func find_target_state():
 	state = _States.chase_target
 
 func chase_target_state(delta):
+	if main_target.dead:
+		target_list.erase(main_target)
+		main_target = null
+		state = _States.find_target
+		return 0
 	var main_target_pos = main_target.get_pos()
 	set_acceleration(main_target_pos)
 
 	look_at_target(delta, main_target_pos)
-
+	
 	var distance_to_main_target = (main_target_pos - get_pos()).length()
 	if distance_to_main_target < MAIN_TARGET_ATTACK_RANGE:
 		state = _States.chase_attack
 	elif distance_to_main_target > MAIN_TARGET_AGRO_RANGE:
 		target_list.erase(main_target)
+		main_target = null
 		state = _States.find_target
 
 
 func chase_attack_state(delta):
+	if main_target.dead:
+		target_list.erase(main_target)
+		main_target = null
+		state = _States.find_target
+		return 0
 	var main_target_pos = main_target.get_pos()
 	set_acceleration(main_target_pos)
 
 	look_at_target(delta, main_target_pos)
 
 	var distance_to_main_target = (main_target_pos - get_pos()).length()
-	if distance_to_main_target < MAIN_TARGET_ATTACK_RANGE:
+	if distance_to_main_target < MAIN_TARGET_ATTACK_RANGE  and not main_target.dead:
 		shoot()
 	else:
 		state = _States.chase_target
@@ -175,6 +186,7 @@ func shoot():
 		var b = bullet.instance()
 		bullet_container.add_child(b)
 		b.damage = damage
+		print(main_target)
 		b.start_at(get_rot() + rand_range(-PI/36, PI/36), get_node("gun").get_global_pos(), main_target)
 
 func explode():

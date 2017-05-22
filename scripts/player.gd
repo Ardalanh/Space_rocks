@@ -17,7 +17,7 @@ var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
 var shoot_key_pressed = false
-var Dead = false
+var dead = false
 
 var MAIN_THRUST = 1200
 var MAX_VEL = 300
@@ -82,15 +82,17 @@ func shoot():
 	bullet_rate.start()
 	var b = bullet.instance()
 	bullet_container.add_child(b)
-	b.start_at(get_rot(), get_node("mid_gun").get_global_pos())
+	b.start_at(get_rot(), get_node("gun").get_global_pos())
 	b.damage = damage
-	shoot_sound.play("shoot%s" % (str(randi()%2 + 1)) , true)
+	shoot_sound.play("shoot1" , true)
 
 func take_damage(damage):
 	health_point = health_point - damage
 	if health_point <= 0:
-		Dead = true
-		emit_signal("player_dead")
+		dead()
+
+func dead():
+	dead = true
 
 func camera_offset(mouse_dist):
 	var max_offset = (screen_size * 2).length()

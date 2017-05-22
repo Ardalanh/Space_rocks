@@ -25,7 +25,7 @@ editor/display_folded = true
 
 [node name="restart_timer" type="Timer" parent="."]
 
-process/pause_mode = 1
+process/pause_mode = 2
 process_mode = 1
 wait_time = 5.0
 one_shot = false
@@ -34,6 +34,8 @@ autostart = false
 [connection signal="wave_timeout" from="hud" to="wave" method="_on_hud_wave_timeout"]
 
 [connection signal="wave_timeout" from="hud" to="." method="_on_hud_wave_timeout"]
+
+[connection signal="player_dead" from="player" to="." method="_on_player_player_dead"]
 
 [connection signal="Dead" from="planet" to="." method="_on_planet_Dead"]
 
