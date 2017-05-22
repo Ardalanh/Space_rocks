@@ -21,7 +21,7 @@ var Dead = false
 
 var MAIN_THRUST = 1200
 var MAX_VEL = 300
-var damage = 1000
+var damage = 500
 var MAX_HP = 500
 var health_point = MAX_HP
 
