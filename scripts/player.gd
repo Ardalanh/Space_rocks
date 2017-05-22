@@ -98,6 +98,7 @@ func dead():
 	set_process_unhandled_input(false)
 	hide()
 	get_node("collision").set_trigger(true)
+	get_node("camera").clear_current()
 	emit_signal("player_dead")
 
 func camera_offset(mouse_dist):

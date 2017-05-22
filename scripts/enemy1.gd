@@ -87,8 +87,6 @@ func follow_planet_state(delta):
 	if distance_to_planet < PLANET_AGRO_RANGE:
 		state = _States.attack_planet
 
-
-
 func attack_planet_state(delta):
 	set_acceleration(planet_pos, false) #false for decelerating
 
@@ -126,7 +124,6 @@ func chase_target_state(delta):
 		target_list.erase(main_target)
 		main_target = null
 		state = _States.find_target
-
 
 func chase_attack_state(delta):
 	if main_target.dead:

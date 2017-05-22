@@ -82,4 +82,4 @@ func _on_hud_wave_timeout():
 	state = _States.def
 
 func _on_player_player_dead():
-	pass
+	get_node("camera").make_current()
