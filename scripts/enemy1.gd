@@ -38,7 +38,7 @@ var main_target
 var planet_pos
 
 var health_point = 1000
-var damage = 1
+var damage = 10
 var state = _States.follow_planet
 
 func start_at(pos, planet):
@@ -175,7 +175,7 @@ func shoot():
 		var b = bullet.instance()
 		bullet_container.add_child(b)
 		b.damage = damage
-		b.start_at(get_rot() + rand_range(-PI/36, PI/36), get_node("gun").get_global_pos())
+		b.start_at(get_rot() + rand_range(-PI/36, PI/36), get_node("gun").get_global_pos(), main_target)
 
 func explode():
 	queue_free()
