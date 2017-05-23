@@ -39,9 +39,13 @@ var planet_pos
 
 var health_point = 1000
 <<<<<<< HEAD
+<<<<<<< HEAD
 var damage = 100
 =======
 var damage = 10
+>>>>>>> master
+=======
+var damage = 100
 >>>>>>> master
 var state = _States.follow_planet
 
@@ -91,8 +95,6 @@ func follow_planet_state(delta):
 	if distance_to_planet < PLANET_AGRO_RANGE:
 		state = _States.attack_planet
 
-
-
 func attack_planet_state(delta):
 	set_acceleration(planet_pos, false) #false for decelerating
 
@@ -109,15 +111,22 @@ func find_target_state():
 	for target in target_list:
 		if target.get_name() == 'player':
 			main_target = target
-
 	state = _States.chase_target
 
 func chase_target_state(delta):
 	if main_target.dead:
+<<<<<<< HEAD
 		target_list.erase(main_target)
 		main_target = null
 		state = _States.find_target
 		return 0
+=======
+		state = _States.find_target
+		target_list.erase(main_target)
+		main_target = null
+		return 0
+
+>>>>>>> master
 	var main_target_pos = main_target.get_pos()
 	set_acceleration(main_target_pos)
 
@@ -131,12 +140,17 @@ func chase_target_state(delta):
 		main_target = null
 		state = _States.find_target
 
-
 func chase_attack_state(delta):
 	if main_target.dead:
+<<<<<<< HEAD
 		target_list.erase(main_target)
 		main_target = null
 		state = _States.find_target
+=======
+		state = _States.find_target
+		target_list.erase(main_target)
+		main_target = null
+>>>>>>> master
 		return 0
 	var main_target_pos = main_target.get_pos()
 	set_acceleration(main_target_pos)
@@ -151,7 +165,6 @@ func chase_attack_state(delta):
 
 func attack_action_state():
 	pass
-
 
 func look_at_target(delta, target_pos):
 	var angle_to_target = get_angle_to(target_pos)

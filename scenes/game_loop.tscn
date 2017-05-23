@@ -31,10 +31,36 @@ wait_time = 5.0
 one_shot = false
 autostart = false
 
-[connection signal="wave_timeout" from="hud" to="wave" method="_on_hud_wave_timeout"]
+[node name="camera" type="Camera2D" parent="."]
+
+anchor_mode = 1
+rotating = false
+current = false
+zoom = Vector2( 1, 1 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = false
+smoothing/speed = 5.0
+drag_margin/left = 0.2
+drag_margin/top = 0.2
+drag_margin/right = 0.2
+drag_margin/bottom = 0.2
 
 [connection signal="wave_timeout" from="hud" to="." method="_on_hud_wave_timeout"]
 
+<<<<<<< HEAD
+=======
+[connection signal="wave_timeout" from="hud" to="wave" method="_on_hud_wave_timeout"]
+
+[connection signal="player_alive" from="player" to="." method="_on_player_player_alive"]
+
+[connection signal="player_dead" from="player" to="hud" method="_on_player_player_dead"]
+
+>>>>>>> master
 [connection signal="player_dead" from="player" to="." method="_on_player_player_dead"]
 
 [connection signal="Dead" from="planet" to="." method="_on_planet_Dead"]
