@@ -1,12 +1,14 @@
 extends KinematicBody2D
 
 signal player_dead
+signal player_alive
 
 const MAX_CAMERA = 600
 
 export (PackedScene) var bullet
 onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate = get_node("bullet_rate")
+onready var respawn = get_node("respawn")
 onready var shoot_sound = get_node("shoot_sound")
 onready var player_camera = get_node("camera")
 onready var HP_BAR = get_node("control/hp_bar")
@@ -18,18 +20,22 @@ var vel = Vector2()
 var acc = Vector2(0, 0)
 var shoot_key_pressed = false
 var dead = false
+var respawn_time = 10
 
 var MAIN_THRUST = 1200
 var MAX_VEL = 300
 var damage = 500
 var MAX_HP = 500
-var health_point = MAX_HP
+var health_point
 
 func _ready():
+	health_point = MAX_HP
 	HP_BAR.set_max(MAX_HP)
 	HP_BAR.set_val(health_point)
+	respawn.set_wait_time(respawn_time)
 	screen_size = get_viewport_rect().size
 	pos = screen_size / 2
+	print("ready excuted")
 	set_pos(pos)
 	set_fixed_process(true)
 	set_process(true)
@@ -99,7 +105,21 @@ func dead():
 	hide()
 	get_node("collision").set_trigger(true)
 	get_node("camera").clear_current()
-	emit_signal("player_dead")
+	get_node("respawn").start()
+	emit_signal("player_dead", respawn_time)
+
+func respawn():
+	dead = false
+	pos = Vector2()
+	vel = Vector2()
+	acc = Vector2(0, 0)
+	shoot_key_pressed = false
+	_ready()
+	show()
+	get_node("collision").set_trigger(false)
+	emit_signal("player_alive")
+	get_node("camera").make_current()
+
 
 func camera_offset(mouse_dist):
 	var max_offset = (screen_size * 2).length()
@@ -108,3 +128,7 @@ func camera_offset(mouse_dist):
 	mouse_len = (1/max_offset) * pow(mouse_len, 2)
 	var offset_ratio = mouse_len/mouse_dist.length()
 	player_camera.set_offset(mouse_dist * offset_ratio)
+
+
+func _on_respawn_timeout():
+	respawn()

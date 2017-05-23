@@ -50,9 +50,13 @@ drag_margin/top = 0.2
 drag_margin/right = 0.2
 drag_margin/bottom = 0.2
 
+[connection signal="wave_timeout" from="hud" to="." method="_on_hud_wave_timeout"]
+
 [connection signal="wave_timeout" from="hud" to="wave" method="_on_hud_wave_timeout"]
 
-[connection signal="wave_timeout" from="hud" to="." method="_on_hud_wave_timeout"]
+[connection signal="player_alive" from="player" to="." method="_on_player_player_alive"]
+
+[connection signal="player_dead" from="player" to="hud" method="_on_player_player_dead"]
 
 [connection signal="player_dead" from="player" to="." method="_on_player_player_dead"]
 

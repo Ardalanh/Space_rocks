@@ -81,5 +81,10 @@ func _on_planet_Dead():
 func _on_hud_wave_timeout():
 	state = _States.def
 
-func _on_player_player_dead():
+
+func _on_player_player_alive():
+	get_node("camera").clear_current()
+
+
+func _on_player_player_dead(err):
 	get_node("camera").make_current()

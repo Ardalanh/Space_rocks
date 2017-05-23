@@ -75,6 +75,7 @@ autostart = false
 
 [node name="pause_popup" type="Panel" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 visibility/opacity = 0.5
 anchor/right = 1
@@ -140,6 +141,7 @@ autostart = false
 
 [node name="control" type="Control" parent="."]
 
+editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -190,8 +192,33 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="respawn_time" type="Label" parent="."]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 40.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 2 )
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Timer" type="Timer" parent="respawn_time"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
 [connection signal="timeout" from="message_timer" to="." method="_on_message_timer_timeout"]
 
 [connection signal="timeout" from="next_wave/next_wave_timer" to="." method="_on_next_wave_timer_timeout"]
+
+[connection signal="timeout" from="respawn_time/Timer" to="." method="_on_Timer_timeout"]
 
 
