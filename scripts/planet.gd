@@ -1,7 +1,7 @@
 extends StaticBody2D
 
 var ROT_SPEED = deg2rad(10)
-var max_hp = 3000
+var max_hp = 30000
 var healt_point = max_hp
 
 signal Dead
