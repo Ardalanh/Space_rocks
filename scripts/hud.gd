@@ -7,12 +7,16 @@ var screen
 onready var wave_label = get_node("next_wave")
 onready var enemy_remain = get_node("enemy_remain")
 onready var wave_timer = get_node("next_wave/next_wave_timer")
+onready var respawn
+onready var respawn_timer
 onready var planet_hp = get_node("control/planet_hp")
 onready var planet_hp_size = planet_hp.get_rect().size
 
 func _ready():
 	set_process_input(true)
 	set_process(true)
+	respawn = get_node("respawn")
+	respawn_timer = get_node("respawn/timer")
 
 func _input(event):
 	if event.is_action_pressed("pause_toggle"):
@@ -34,11 +38,17 @@ func _process(delta):
 							screen.y - planet_hp_size.y-10))
 	get_node("control/planet_hp/hp").set_text(str(global.planetHP))
 	wave_label.set_text("Next wave in: " + str(int(wave_timer.get_time_left())))
+	respawn.set_text("respawn in: " + str(int(respawn_timer.get_time_left())))
 
 func show_message(text):
 	get_node("message").set_text(text)
 	get_node("message").show()
 	get_node("message_timer").start()
+
+func show_respawn_timer(time):
+	respawn_timer.set_wait_time(time)
+	respawn.show()
+	respawn_timer.start()
 
 func _on_message_timer_timeout():
 	get_node("message").hide()
@@ -52,3 +62,11 @@ func _on_next_wave_timer_timeout():
 
 func _on_wave_number_of_enemies(num):
 	enemy_remain.set_text(str(num))
+
+func _on_player_player_dead(time):
+	show_respawn_timer(time)
+
+
+func _on_timer_timeout():
+	respawn.hide()
+	respawn.set_text('')

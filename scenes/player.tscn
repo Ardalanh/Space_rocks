@@ -155,4 +155,13 @@ range/exp_edit = false
 range/rounded = false
 percent/visible = false
 
+[node name="respawn_time" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[connection signal="timeout" from="respawn_time" to="." method="_on_respawn_time_timeout"]
+
 

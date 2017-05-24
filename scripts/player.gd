@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 signal player_dead
+signal player_alive
 
 const MAX_CAMERA = 600
 
@@ -18,14 +19,16 @@ var vel = Vector2()
 var acc = Vector2(0, 0)
 var shoot_key_pressed = false
 var dead = false
+var respawn_time = 4
 
 var MAIN_THRUST = 1200
 var MAX_VEL = 300
 var damage = 500
 var MAX_HP = 500
-var health_point = MAX_HP
+var health_point
 
 func _ready():
+	health_point = MAX_HP
 	HP_BAR.set_max(MAX_HP)
 	HP_BAR.set_val(health_point)
 	screen_size = get_viewport_rect().size
@@ -99,7 +102,22 @@ func dead():
 	hide()
 	get_node("collision").set_trigger(true)
 	get_node("camera").clear_current()
-	emit_signal("player_dead")
+	emit_signal("player_dead", respawn_time)
+	get_node("respawn_time").set_wait_time(respawn_time)
+	get_node("respawn_time").start()
+
+func alive():
+	dead = false
+	pos = Vector2()
+	vel = Vector2()
+	acc = Vector2(0, 0)
+	shoot_key_pressed = false
+	_ready()
+	show()
+	get_node("collision").set_trigger(false)
+	emit_signal("player_alive")
+	get_node("camera").make_current()
+
 
 func camera_offset(mouse_dist):
 	var max_offset = (screen_size * 2).length()
@@ -108,3 +126,8 @@ func camera_offset(mouse_dist):
 	mouse_len = (1/max_offset) * pow(mouse_len, 2)
 	var offset_ratio = mouse_len/mouse_dist.length()
 	player_camera.set_offset(mouse_dist * offset_ratio)
+
+
+func _on_respawn_time_timeout():
+	print("time out")
+	alive()
