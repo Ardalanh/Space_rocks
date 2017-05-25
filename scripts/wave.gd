@@ -28,7 +28,7 @@ func _process(delta):
 
 func change_spawn_pos():
 	var s_pos = spawn_node.get_global_pos()
-	theta += deg2rad(-120)
+	theta += deg2rad(-119)
 	s_pos = Vector2(r * cos(theta) , r * sin(theta))
 	spawn_node.set_global_pos(s_pos)
 
@@ -55,7 +55,7 @@ func spawn():
 		change_spawn_pos()
 
 func _on_hud_wave_timeout():
-	number_of_units = 9
+	number_of_units = 18
 	r = 1500
 	theta = 0
 	set_process(true)

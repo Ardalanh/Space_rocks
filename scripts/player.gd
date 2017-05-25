@@ -58,7 +58,6 @@ func _fixed_process(delta):
 	var direction_to_mouse = distance_to_mouse.normalized()
 	camera_offset(distance_to_mouse)
 
-
 	if Input.is_action_pressed("player_thrust"):
 		acc = direction_to_mouse * MAIN_THRUST
 	else:
@@ -76,7 +75,7 @@ func _fixed_process(delta):
 		var coll = get_collider()
 		var n = get_collision_normal()
 		if coll.is_in_group('enemy'):
-			coll.vel += vel
+			coll.vel += vel * 0.5
 		vel = n.slide(vel)
 		move(n.slide(motion))
 

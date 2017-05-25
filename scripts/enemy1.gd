@@ -15,8 +15,8 @@ onready var bullet_rate = get_node("bullet_rate")
 onready var HP_BAR = get_node("control/hp_bar")
 onready var player_agro = get_node("agro_time")
 
-const MAIN_THRUST = 300
-const MAX_VEL = 150
+const MAIN_THRUST = 150
+const MAX_VEL = 300
 const PLAYER_AGRO_RANGE = 500
 const PLAYER_AGRO_TIME = 0.5
 const PLANET_AGRO_RANGE = 500
@@ -24,21 +24,21 @@ const MAIN_TARGET_AGRO_RANGE = 600
 const MAIN_TARGET_ATTACK_RANGE = 400
 const ROT_SPEED = 5
 const ACCURACY = 5
-const STOPING_FRICTION = 0.5
+const STOPING_FRICTION = 2
 
 var screen_size
 var rot = 0
 var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
-var bounce = 0.8
+var bounce = 0.5
 
 var target_list = []
 var main_target
 var planet_pos
 
 var health_point = 1000
-export var damage = 40
+export var damage = 1
 var state = _States.follow_planet
 
 func start_at(pos, planet):
@@ -74,12 +74,14 @@ func _process(delta):
 		var spread = pow(-1,randi()%2)
 		var coll = get_collider()
 		if coll.is_in_group('enemy'):
-			coll.vel = vel.tangent() * spread * bounce
-		vel = vel.tangent() * spread * -1
+			coll.vel += vel * bounce
+			vel = (vel + coll.vel) * bounce
+		vel = vel.tangent() * spread * bounce
 		move(get_collision_normal().slide(motion))
 
 func follow_planet_state(delta):
-	set_acceleration(planet_pos)
+	steer(planet_pos)
+#	set_acceleration(planet_pos)
 
 	look_at_target(delta, planet_pos)
 
@@ -88,7 +90,8 @@ func follow_planet_state(delta):
 		state = _States.attack_planet
 
 func attack_planet_state(delta):
-	set_acceleration(planet_pos, false) #false for decelerating
+	steer(planet_pos, false)
+#	set_acceleration(planet_pos, false) #false for decelerating
 
 	look_at_target(delta, planet_pos)
 	shoot()
@@ -113,7 +116,8 @@ func chase_target_state(delta):
 		return 0
 
 	var main_target_pos = main_target.get_pos()
-	set_acceleration(main_target_pos)
+	steer(main_target_pos)
+#	set_acceleration(main_target_pos)
 
 	look_at_target(delta, main_target_pos)
 
@@ -132,7 +136,9 @@ func chase_attack_state(delta):
 		main_target = null
 		return 0
 	var main_target_pos = main_target.get_pos()
-	set_acceleration(main_target_pos)
+
+	steer(main_target_pos)
+#	set_acceleration(main_target_pos)
 
 	look_at_target(delta, main_target_pos)
 
@@ -159,21 +165,31 @@ func set_acceleration(target_pos, is_thrusting=true):# is_thrusting is for accel
 	else:
 		acc = -vel * STOPING_FRICTION
 
-func follow_target(delta, target_pos):
-	var target_dis = target_pos - get_pos()
-	var target_dir = target_dis.normalized()
-	target_dis = target_dis.length()
-	var target_angel = get_angle_to(target_pos)
+func steer(target, is_thrusting=true):
+	if not is_thrusting:
+		acc = -vel * STOPING_FRICTION
+		return 0
+	var desired = (target - get_pos()).normalized() * MAX_VEL
+	var steer = (desired - vel)
+	if steer.length() > MAIN_THRUST:
+		steer = steer.normalized() * MAIN_THRUST
+	acc = steer
 
-	rotate(target_angel * ROT_SPEED * delta)
-	target_angel = rad2deg(target_angel)
-	if target_angel < ACCURACY and target_angel > -ACCURACY and bullet_rate.get_time_left() == 0 and target_dis < 400:
-		shoot()
-
-	if target_dis < 300:
-		return target_dir * -vel
-	else:
-		return target_dir * MAIN_THRUST
+#func follow_target(delta, target_pos):
+#	var target_dis = target_pos - get_pos()
+#	var target_dir = target_dis.normalized()
+#	target_dis = target_dis.length()
+#	var target_angel = get_angle_to(target_pos)
+#
+#	rotate(target_angel * ROT_SPEED * delta)
+#	target_angel = rad2deg(target_angel)
+#	if target_angel < ACCURACY and target_angel > -ACCURACY and bullet_rate.get_time_left() == 0 and target_dis < 400:
+#		shoot()
+#
+#	if target_dis < 300:
+#		return target_dir * -vel
+#	else:
+#		return target_dir * MAIN_THRUST
 
 func shoot():
 
