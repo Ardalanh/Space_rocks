@@ -38,7 +38,7 @@ var main_target
 var planet_pos
 
 var health_point = 1000
-var damage = 100
+export var damage = 40
 var state = _States.follow_planet
 
 func start_at(pos, planet):

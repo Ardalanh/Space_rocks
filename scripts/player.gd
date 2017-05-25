@@ -19,7 +19,7 @@ var vel = Vector2()
 var acc = Vector2(0, 0)
 var shoot_key_pressed = false
 var dead = false
-var respawn_time = 4
+var respawn_time = 10
 
 var MAIN_THRUST = 1200
 var MAX_VEL = 300
@@ -91,7 +91,7 @@ func shoot():
 
 func take_damage(damage):
 	health_point = health_point - damage
-	if health_point <= 0:
+	if health_point <= 0 and not dead:
 		dead()
 
 func dead():

@@ -38,7 +38,7 @@ func _process(delta):
 							screen.y - planet_hp_size.y-10))
 	get_node("control/planet_hp/hp").set_text(str(global.planetHP))
 	wave_label.set_text("Next wave in: " + str(int(wave_timer.get_time_left())))
-	respawn.set_text("respawn in: " + str(int(respawn_timer.get_time_left())))
+	respawn.set_text("respawn in: " + str(int(respawn_timer.get_time_left() + 1)))
 
 func show_message(text):
 	get_node("message").set_text(text)
