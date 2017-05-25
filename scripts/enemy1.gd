@@ -13,15 +13,11 @@ export (PackedScene) var bullet
 onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate = get_node("bullet_rate")
 onready var HP_BAR = get_node("control/hp_bar")
-onready var player_agro = get_node("agro_time")
 
 const MAIN_THRUST = 150
 const MAX_VEL = 300
-const PLAYER_AGRO_RANGE = 500
-const PLAYER_AGRO_TIME = 0.5
-const PLANET_AGRO_RANGE = 500
 const MAIN_TARGET_AGRO_RANGE = 600
-const MAIN_TARGET_ATTACK_RANGE = 400
+const ATTACK_RANGE = 300
 const ROT_SPEED = 5
 const ACCURACY = 5
 const STOPING_FRICTION = 2
@@ -36,19 +32,20 @@ var bounce = 0.5
 var target_list = []
 var main_target
 var planet_pos
+var planet_radius
 
 var health_point = 1000
 export var damage = 1
 var state = _States.follow_planet
 
-func start_at(pos, planet):
+func start_at(pos, planet_p, planet_r):
 	HP_BAR.set_val(health_point)
 	set_pos(pos)
 	randomize()
 	set_process(true)
-	planet_pos = planet
+	planet_pos = planet_p
+	planet_radius = planet_r
 	look_at(planet_pos)
-	player_agro.set_wait_time(PLAYER_AGRO_TIME)
 
 func _process(delta):
 	if state == _States.follow_planet:
@@ -74,29 +71,28 @@ func _process(delta):
 		var spread = pow(-1,randi()%2)
 		var coll = get_collider()
 		if coll.is_in_group('enemy'):
-			coll.vel += vel * bounce
-			vel = (vel + coll.vel) * bounce
-		vel = vel.tangent() * spread * bounce
+			coll.vel = vel.tangent().normalized() * 50 * spread
+		vel = vel.tangent().normalized() * 50 * spread * -1
 		move(get_collision_normal().slide(motion))
 
 func follow_planet_state(delta):
-	steer(planet_pos)
+	steer(planet_pos, planet_radius)
 #	set_acceleration(planet_pos)
 
 	look_at_target(delta, planet_pos)
 
 	var distance_to_planet = (planet_pos - get_pos()).length()
-	if distance_to_planet < PLANET_AGRO_RANGE:
+	if distance_to_planet < ATTACK_RANGE + planet_radius:
 		state = _States.attack_planet
 
 func attack_planet_state(delta):
-	steer(planet_pos, false)
+	steer(planet_pos, planet_radius)
 #	set_acceleration(planet_pos, false) #false for decelerating
 
 	look_at_target(delta, planet_pos)
 	shoot()
 	var distance_to_planet = (planet_pos - get_pos()).length()
-	if distance_to_planet > PLANET_AGRO_RANGE:
+	if distance_to_planet > ATTACK_RANGE + planet_radius:
 		state = _States.follow_planet
 
 func find_target_state():
@@ -122,7 +118,7 @@ func chase_target_state(delta):
 	look_at_target(delta, main_target_pos)
 
 	var distance_to_main_target = (main_target_pos - get_pos()).length()
-	if distance_to_main_target < MAIN_TARGET_ATTACK_RANGE:
+	if distance_to_main_target < ATTACK_RANGE:
 		state = _States.chase_attack
 	elif distance_to_main_target > MAIN_TARGET_AGRO_RANGE:
 		target_list.erase(main_target)
@@ -143,7 +139,7 @@ func chase_attack_state(delta):
 	look_at_target(delta, main_target_pos)
 
 	var distance_to_main_target = (main_target_pos - get_pos()).length()
-	if distance_to_main_target < MAIN_TARGET_ATTACK_RANGE:
+	if distance_to_main_target < ATTACK_RANGE:
 		shoot()
 	else:
 		state = _States.chase_target
@@ -165,11 +161,18 @@ func set_acceleration(target_pos, is_thrusting=true):# is_thrusting is for accel
 	else:
 		acc = -vel * STOPING_FRICTION
 
-func steer(target, is_thrusting=true):
-	if not is_thrusting:
+func steer(target, target_raduis=0):
+	var desired = target - get_pos()
+	var distance_to_target = desired.length() - target_raduis
+	desired = desired.normalized()
+	if distance_to_target > ATTACK_RANGE :
+		desired *= MAX_VEL
+	elif distance_to_target < (ATTACK_RANGE) * 0.5:
+		desired *= ((distance_to_target)  * MAX_VEL * -0.5 / ATTACK_RANGE)
+	else:
 		acc = -vel * STOPING_FRICTION
 		return 0
-	var desired = (target - get_pos()).normalized() * MAX_VEL
+
 	var steer = (desired - vel)
 	if steer.length() > MAIN_THRUST:
 		steer = steer.normalized() * MAIN_THRUST

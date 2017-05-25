@@ -12,6 +12,7 @@ onready var spawn_node = get_node("spawn_pos")
 var number_of_units = 24
 var player
 var planet_pos
+var planet_radius
 var r = 1500
 var theta = 0
 var enemy
@@ -28,7 +29,7 @@ func _process(delta):
 
 func change_spawn_pos():
 	var s_pos = spawn_node.get_global_pos()
-	theta += deg2rad(-119)
+	theta += deg2rad(-118)
 	s_pos = Vector2(r * cos(theta) , r * sin(theta))
 	spawn_node.set_global_pos(s_pos)
 
@@ -48,7 +49,7 @@ func spawn():
 	if spawn_rate.get_time_left() == 0 and number_of_units > 0:
 		var e = global.enemy_factory_generate(global.wave_num)
 		enemy_container.add_child(e)
-		e.start_at(spawn_node.get_global_pos(), planet_pos)
+		e.start_at(spawn_node.get_global_pos(), planet_pos, planet_radius)
 		e.connect("explode", self, "_on_enemy_explode")
 		spawn_rate.start()
 		number_of_units -= 1
@@ -60,5 +61,7 @@ func _on_hud_wave_timeout():
 	theta = 0
 	set_process(true)
 
-func _on_planet_planet_pos_signal(planet):
-	planet_pos = planet
+func _on_planet_planet_pos_signal(planet_p, planet_r):
+	planet_pos = planet_p
+	planet_radius = planet_r
+

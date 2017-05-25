@@ -59,7 +59,7 @@ __meta__ = {
 
 frames = SubResource( 2 )
 animation = "default"
-frame = 14
+frame = 9
 playing = true
 
 [node name="collision" type="CollisionShape2D" parent="."]

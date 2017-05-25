@@ -104,13 +104,6 @@ range/exp_edit = false
 range/rounded = false
 percent/visible = false
 
-[node name="agro_time" type="Timer" parent="."]
-
-process_mode = 1
-wait_time = 1.0
-one_shot = true
-autostart = false
-
 [node name="agro_range" type="Area2D" parent="."]
 
 input/pickable = true

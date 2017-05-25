@@ -8,7 +8,8 @@ signal Dead
 signal planet_pos_signal
 
 func _ready():
-	emit_signal("planet_pos_signal", get_global_pos())
+	var radius = get_node("collision").get_shape().get_radius()
+	emit_signal("planet_pos_signal", get_global_pos(), radius)
 	global.planet_max_hp = max_hp
 	set_process(true)
 
