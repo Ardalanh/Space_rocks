@@ -1,9 +1,7 @@
 [gd_scene load_steps=4 format=1]
 
-
 [ext_resource path="res://scripts/loading.gd" type="Script" id=1]
 [ext_resource path="res://art/Backgrounds/^1E8103769D755B58FF98BD1B7B9594E5E068CA24B72E61054A^pimgpsh_fullsize_distr.png" type="Texture" id=2]
-
 
 [sub_resource type="Animation" id=1]
 
