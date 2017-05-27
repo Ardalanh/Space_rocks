@@ -9,8 +9,7 @@ onready var enemy_remain = get_node("enemy_remain")
 onready var wave_timer = get_node("next_wave/next_wave_timer")
 onready var respawn
 onready var respawn_timer
-onready var planet_hp = get_node("control/planet_hp")
-onready var planet_hp_size = planet_hp.get_rect().size
+onready var planet_hp = get_node("panel/planet_hp")
 
 func _ready():
 	set_process_input(true)
@@ -19,24 +18,21 @@ func _ready():
 	respawn_timer = get_node("respawn/timer")
 
 func _input(event):
+	planet_hp.set_max(global.planet_max_hp)
 	if event.is_action_pressed("pause_toggle"):
 		global.paused = not global.paused
 		get_tree().set_pause(global.paused)
 		get_node("pause_popup").set_hidden(not global.paused)
 		get_node("message").set_hidden(global.paused)
 
+
 func next_wave():
 	wave_label.show()
 	wave_timer.start()
 
 func _process(delta):
-	screen = get_viewport().get_rect().size
-	if planet_hp.get_max() != global.planet_max_hp:
-		planet_hp.set_max(global.planet_max_hp)
 	planet_hp.set_value(global.planetHP)
-	planet_hp.set_pos(Vector2(screen.x/2 - planet_hp_size.x/2,
-							screen.y - planet_hp_size.y-10))
-	get_node("control/planet_hp/hp").set_text(str(global.planetHP))
+	get_node("panel/planet_hp/hp").set_text(str(global.planetHP))
 	wave_label.set_text("Next wave in: " + str(int(wave_timer.get_time_left())))
 	respawn.set_text("respawn in: " + str(int(respawn_timer.get_time_left() + 1)))
 
