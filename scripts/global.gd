@@ -27,3 +27,6 @@ func new_game():
 
 func enemy_factory_generate(index):
 	return load("res://scenes/creep_scenes/enemy%d.tscn"%index).instance()
+
+func player_ability(index):
+	return load("res://scenes/abilities/ability_%d.tscn"%index).instance()

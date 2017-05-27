@@ -39,6 +39,8 @@ func _ready():
 	set_process_unhandled_input(true)
 
 func _unhandled_input(event):
+	if event.is_action_released("player_ability_1"):
+		cast_ability()
 	if event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
 	if event.is_action_pressed("player_shoot"):
@@ -117,7 +119,6 @@ func alive():
 	emit_signal("player_alive")
 	get_node("camera").make_current()
 
-
 func camera_offset(mouse_dist):
 	var max_offset = (screen_size * 2).length()
 
@@ -126,7 +127,11 @@ func camera_offset(mouse_dist):
 	var offset_ratio = mouse_len/mouse_dist.length()
 	player_camera.set_offset(mouse_dist * offset_ratio)
 
-
 func _on_respawn_time_timeout():
 	print("time out")
 	alive()
+
+func cast_ability():
+	var ability = global.player_ability(1)
+	bullet_container.add_child(ability)
+	ability.start_at(get_rot(), get_node("gun").get_global_pos())
