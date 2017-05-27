@@ -1,8 +1,9 @@
 [gd_scene load_steps=7 format=1]
 
-[ext_resource path="res://scripts/enemy1.gd" type="Script" id=1]
+[ext_resource path="res://scenes/enemy1.gd" type="Script" id=1]
 [ext_resource path="res://scenes/enemy_bullet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://art/PNG/enemyBlack1.png" type="Texture" id=3]
+
 
 [sub_resource type="CircleShape2D" id=1]
 

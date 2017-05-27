@@ -1,10 +1,11 @@
 [gd_scene load_steps=9 format=1]
 
-[ext_resource path="res://scripts/player.gd" type="Script" id=1]
+[ext_resource path="res://scenes/player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player_bullet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://art/PNG/playerShip2_orange.png" type="Texture" id=3]
 [ext_resource path="res://snd/shoot1.wav" type="Sample" id=4]
 [ext_resource path="res://snd/shoot2.wav" type="Sample" id=5]
+
 
 [sub_resource type="CircleShape2D" id=1]
 
