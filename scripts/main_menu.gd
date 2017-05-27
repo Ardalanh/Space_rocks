@@ -1,10 +1,12 @@
-extends Node
+extends Control
 
 onready var buttons = get_node("button")
 onready var buttons_size = buttons.get_rect().size
 
+
 func _ready():
 	set_process(true)
+	get_node("fade_in").play("fading")
 
 func _process(delta):
 	var screen = get_viewport().get_rect().size
@@ -13,3 +15,4 @@ func _process(delta):
 
 func _on_button_pressed():
 	global.new_game()
+
