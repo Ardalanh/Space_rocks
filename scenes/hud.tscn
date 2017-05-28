@@ -299,6 +299,8 @@ autostart = false
 
 [connection signal="timeout" from="next_wave/next_wave_timer" to="." method="_on_next_wave_timer_timeout"]
 
+[connection signal="button_down" from="panel/ability_ontainer/button_1" to="." method="_on_button_1_button_down"]
+
 [connection signal="timeout" from="respawn/timer" to="." method="_on_timer_timeout"]
 
 

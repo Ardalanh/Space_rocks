@@ -36,10 +36,10 @@ func _ready():
 	set_pos(pos)
 	set_fixed_process(true)
 	set_process(true)
-	set_process_unhandled_input(true)
+	set_process_input(true)
 
-func _unhandled_input(event):
-	if event.is_action_released("player_ability_1"):
+func _input(event):
+	if event.is_action_pressed("player_ability_1"):
 		cast_ability()
 	if event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
@@ -134,4 +134,4 @@ func _on_respawn_time_timeout():
 func cast_ability():
 	var ability = global.player_ability(1)
 	bullet_container.add_child(ability)
-	ability.start_at(get_rot(), get_node("gun").get_global_pos())
+	ability.start_at(get_rot(), get_node("gun").get_global_pos(), get_global_mouse_pos())

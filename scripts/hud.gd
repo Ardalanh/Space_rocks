@@ -62,7 +62,10 @@ func _on_wave_number_of_enemies(num):
 func _on_player_player_dead(time):
 	show_respawn_timer(time)
 
-
 func _on_timer_timeout():
 	respawn.hide()
 	respawn.set_text('')
+
+func _on_button_1_button_down():
+	Input.action_press("player_ability_1")
+	print("WE PRESSED")
