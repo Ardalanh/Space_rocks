@@ -12,7 +12,6 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	print(speed)
 	vel = vel.normalized() * speed
 	set_pos(get_pos() + vel * delta)
 

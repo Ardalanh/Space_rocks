@@ -1,8 +1,7 @@
 [gd_scene load_steps=4 format=1]
 
-[ext_resource path="res://scenes/player_bullet.gd" type="Script" id=1]
+[ext_resource path="res://scripts/player_bullet.gd" type="Script" id=1]
 [ext_resource path="res://art/PNG/Lasers/laserRed16.png" type="Texture" id=2]
-
 
 [sub_resource type="CapsuleShape2D" id=1]
 

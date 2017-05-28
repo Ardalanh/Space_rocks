@@ -32,6 +32,7 @@ func _process(delta):
 		victory_state()
 	elif state == _States.lost:
 		lost_state()
+	print(state)
 
 func start_state():
 	state =  _States.spawn
@@ -71,8 +72,6 @@ func _on_restart_timer_timeout():
 	get_tree().set_pause(false)
 	global.new_game()
 
-func _on_wave_wave_done():
-	state = _States.spawn
 
 func _on_planet_Dead():
 	planet_live = false
@@ -87,3 +86,7 @@ func _on_player_player_dead(time):
 
 func _on_player_player_alive():
 	get_node("camera").clear_current()
+
+
+func _on_wave_wave_done():
+	state = _States.spawn

@@ -1,6 +1,6 @@
 [gd_scene load_steps=24 format=1]
 
-[ext_resource path="res://scenes/planet.gd" type="Script" id=1]
+[ext_resource path="res://scripts/planet.gd" type="Script" id=1]
 [ext_resource path="res://art/planet/00.png" type="Texture" id=2]
 [ext_resource path="res://art/planet/01.png" type="Texture" id=3]
 [ext_resource path="res://art/planet/02.png" type="Texture" id=4]
@@ -21,6 +21,7 @@
 [ext_resource path="res://art/planet/17.png" type="Texture" id=19]
 [ext_resource path="res://art/planet/18.png" type="Texture" id=20]
 [ext_resource path="res://art/planet/19.png" type="Texture" id=21]
+
 
 
 [sub_resource type="CircleShape2D" id=1]

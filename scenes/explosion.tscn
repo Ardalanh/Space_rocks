@@ -15,8 +15,7 @@
 [ext_resource path="res://art/Explosions/1/e_0013.tex" type="Texture" id=13]
 [ext_resource path="res://art/Explosions/1/e_0014.tex" type="Texture" id=14]
 [ext_resource path="res://art/Explosions/1/e_0015.tex" type="Texture" id=15]
-[ext_resource path="res://scenes/explosion.gd" type="Script" id=16]
-
+[ext_resource path="res://scripts/explosion.gd" type="Script" id=16]
 
 [sub_resource type="SpriteFrames" id=1]
 

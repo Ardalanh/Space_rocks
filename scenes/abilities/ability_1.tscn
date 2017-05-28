@@ -8,16 +8,15 @@
 custom_solver_bias = 0.0
 radius = 150.0
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 
 resource/name = "explode"
 length = 1.0
 loop = false
 step = 0.1
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=3]
 
-resource/name = "launch"
 length = 1.0
 loop = false
 step = 0.1
@@ -113,8 +112,8 @@ color/color = Color( 0.292969, 0.950287, 1, 1 )
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/explode = SubResource( 3 )
-anims/launch = SubResource( 2 )
+anims/explode = SubResource( 2 )
+anims/launch = SubResource( 3 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
