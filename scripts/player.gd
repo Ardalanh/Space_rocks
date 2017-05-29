@@ -30,8 +30,6 @@ func _ready():
 	HP_BAR.set_max(MAX_HP)
 	HP_BAR.set_val(health_point)
 	screen_size = OS.get_window_size()
-	pos = screen_size / 2
-	set_pos(pos)
 	set_fixed_process(true)
 	set_process(true)
 	set_process_input(true)
@@ -48,6 +46,7 @@ func _process(delta):
 	screen_size = get_viewport_rect().size
 	if shoot_key_pressed  and bullet_rate.get_time_left() == 0:
 		shoot()
+
 	HP_BAR.set_val(health_point)
 
 func _fixed_process(delta):

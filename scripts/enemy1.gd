@@ -19,15 +19,11 @@ const MAX_VEL = 300
 const MAIN_TARGET_AGRO_RANGE = 600
 const ATTACK_RANGE = 300
 const ROT_SPEED = 5
-const ACCURACY = 5
 const STOPING_FRICTION = 2
 
-var screen_size
-var rot = 0
 var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
-var bounce = 0.5
 
 var target_list = []
 var main_target

@@ -37,7 +37,6 @@ func explosion():
 	get_node("timer").start()
 
 func freeze():# timer is signaling to this funcion
-	print(target_list)
 	for t in target_list:
 		t.take_damage(900)
 		t.vel *= 0
