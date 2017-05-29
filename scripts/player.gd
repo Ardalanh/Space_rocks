@@ -3,8 +3,6 @@ extends KinematicBody2D
 signal player_dead
 signal player_alive
 
-const MAX_CAMERA = 600
-
 export (PackedScene) var bullet
 onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate = get_node("bullet_rate")
@@ -31,7 +29,7 @@ func _ready():
 	health_point = MAX_HP
 	HP_BAR.set_max(MAX_HP)
 	HP_BAR.set_val(health_point)
-	screen_size = get_viewport_rect().size
+	screen_size = OS.get_window_size()
 	pos = screen_size / 2
 	set_pos(pos)
 	set_fixed_process(true)
@@ -40,7 +38,7 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("player_ability_1"):
-		cast_ability()
+		cast_ability(1)
 	if event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
 	if event.is_action_pressed("player_shoot"):
@@ -69,6 +67,8 @@ func _fixed_process(delta):
 
 	if Input.is_action_pressed("player_thrust_rev"): # to stop the ship\ put reverse force
 		vel += vel.normalized() * -MAIN_THRUST / 2 * delta
+		if vel.length() < 10:
+			vel = Vector2(0, 0)
 
 	if vel.length() > MAX_VEL:
 		vel = vel.normalized() * MAX_VEL #max
@@ -80,7 +80,6 @@ func _fixed_process(delta):
 			coll.vel += vel * 0.5
 		vel = n.slide(vel)
 		move(n.slide(motion))
-
 
 func shoot():
 	bullet_rate.start()
@@ -131,7 +130,10 @@ func _on_respawn_time_timeout():
 	print("time out")
 	alive()
 
-func cast_ability():
-	var ability = global.player_ability(1)
+func cast_ability(index):
+	var ability = generate_ability(index)
 	bullet_container.add_child(ability)
 	ability.start_at(get_rot(), get_node("gun").get_global_pos(), get_global_mouse_pos())
+
+func generate_ability(index):
+	return load("res://scenes/abilities/ability_%d.tscn"%index).instance()

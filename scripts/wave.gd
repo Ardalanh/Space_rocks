@@ -47,7 +47,7 @@ func no_enemies():
 
 func spawn():
 	if spawn_rate.get_time_left() == 0 and number_of_units > 0:
-		var e = global.enemy_factory_generate(global.wave_num)
+		var e = enemy_factory_generate(global.wave_num)
 		enemy_container.add_child(e)
 		e.start_at(spawn_node.get_global_pos(), planet_pos, planet_radius)
 		e.connect("explode", self, "_on_enemy_explode")
@@ -55,7 +55,7 @@ func spawn():
 		number_of_units -= 1
 		change_spawn_pos()
 
-func _on_hud_wave_timeout():
+func _on_wave_timeout():
 	number_of_units = 18
 	r = 1500
 	theta = 0
@@ -65,3 +65,5 @@ func _on_planet_planet_pos_signal(planet_p, planet_r):
 	planet_pos = planet_p
 	planet_radius = planet_r
 
+func enemy_factory_generate(index):
+	return load("res://scenes/creep_scenes/enemy%d.tscn"%index).instance()

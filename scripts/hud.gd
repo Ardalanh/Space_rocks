@@ -1,8 +1,13 @@
 extends CanvasLayer
 
-signal wave_timeout
+enum _States 	{start,
+				pause,
+				def,
+				wait_spawn,
+				victory,
+				lose}
 
-var screen
+signal wave_timeout
 
 onready var wave_label = get_node("next_wave")
 onready var enemy_remain = get_node("enemy_remain")
@@ -18,21 +23,17 @@ func _ready():
 	respawn_timer = get_node("respawn/timer")
 
 func _input(event):
-	planet_hp.set_max(global.planet_max_hp)
 	if event.is_action_pressed("pause_toggle"):
 		global.paused = not global.paused
 		get_tree().set_pause(global.paused)
 		get_node("pause_popup").set_hidden(not global.paused)
 		get_node("message").set_hidden(global.paused)
 
-
 func next_wave():
 	wave_label.show()
 	wave_timer.start()
 
 func _process(delta):
-	planet_hp.set_value(global.planetHP)
-	get_node("panel/planet_hp/hp").set_text(str(global.planetHP))
 	wave_label.set_text("Next wave in: " + str(int(wave_timer.get_time_left())))
 	respawn.set_text("respawn in: " + str(int(respawn_timer.get_time_left() + 1)))
 
@@ -59,7 +60,7 @@ func _on_next_wave_timer_timeout():
 func _on_wave_number_of_enemies(num):
 	enemy_remain.set_text(str(num))
 
-func _on_player_player_dead(time):
+func _on_player_dead(time):
 	show_respawn_timer(time)
 
 func _on_timer_timeout():
@@ -69,3 +70,10 @@ func _on_timer_timeout():
 func _on_button_1_button_down():
 	Input.action_press("player_ability_1")
 	print("WE PRESSED")
+
+func set_planet_max_hp(max_hp):
+	planet_hp.set_max(max_hp)
+
+func set_planet_hp(hp):
+	planet_hp.set_value(hp)
+	get_node("panel/planet_hp/hp").set_text(str(hp))

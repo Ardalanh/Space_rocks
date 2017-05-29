@@ -5,8 +5,6 @@ var game_over = false
 var paused = false
 var current_scene = null
 var new_scene = null
-var planetHP = 0
-var planet_max_hp = 0
 
 func _ready():
 	var root = get_tree().get_root()
@@ -24,9 +22,3 @@ func new_game():
 	game_over = false
 	wave_num = 0
 	goto_scene("res://scenes/game_loop.tscn")
-
-func enemy_factory_generate(index):
-	return load("res://scenes/creep_scenes/enemy%d.tscn"%index).instance()
-
-func player_ability(index):
-	return load("res://scenes/abilities/ability_%d.tscn"%index).instance()

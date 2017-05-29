@@ -10,6 +10,9 @@ enum _States{start,
 			victory,
 			lost}
 
+signal player_dead
+signal wave_timeout
+
 var state = _States.start
 var planet_live = true
 
@@ -79,11 +82,12 @@ func _on_planet_Dead():
 	state = _States.game_over
 
 func _on_hud_wave_timeout():
+	emit_signal("wave_timeout")
 	state = _States.def
 
 func _on_player_player_dead(time):
+	emit_signal("player_dead")
 	get_node("camera").make_current()
-
 
 func _on_player_player_alive():
 	get_node("camera").clear_current()
