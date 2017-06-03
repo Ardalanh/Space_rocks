@@ -36,7 +36,7 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("player_ability_1"):
-		cast_ability(1)
+		cast_ability(2)
 	if event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
 	if event.is_action_pressed("player_shoot"):
@@ -132,7 +132,10 @@ func _on_respawn_time_timeout():
 func cast_ability(index):
 	var ability = generate_ability(index)
 	bullet_container.add_child(ability)
-	ability.start_at(get_rot(), get_node("gun").get_global_pos(), get_global_mouse_pos())
+	if index == 1:
+		ability.start_at(get_rot(), get_node("gun").get_global_pos(), get_global_mouse_pos())
+	elif index == 2:
+		ability.__init__(self)
 
 func generate_ability(index):
 	return load("res://scenes/abilities/ability_%d.tscn"%index).instance()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=11 format=1]
 
 [ext_resource path="res://scripts/player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player_bullet.tscn" type="PackedScene" id=2]
@@ -11,7 +11,23 @@
 custom_solver_bias = 0.0
 radius = 44.0
 
-[sub_resource type="SampleLibrary" id=2]
+[sub_resource type="CanvasItemShader" id=2]
+
+_code = {
+"fragment": "",
+"fragment_ofs": 0,
+"light": "",
+"light_ofs": 0,
+"vertex": "",
+"vertex_ofs": 0
+}
+
+[sub_resource type="CanvasItemMaterial" id=3]
+
+shader/shader = SubResource( 2 )
+shader/shading_mode = 0
+
+[sub_resource type="SampleLibrary" id=4]
 
 samples/shoot1 = {
 "db": 0.0,
@@ -26,7 +42,7 @@ samples/shoot2 = {
 "sample": ExtResource( 5 )
 }
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=5]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -60,6 +76,7 @@ bullet = ExtResource( 2 )
 
 [node name="ship" type="Sprite" parent="."]
 
+material/material = SubResource( 3 )
 texture = ExtResource( 3 )
 flip_v = true
 
@@ -106,7 +123,7 @@ drag_margin/bottom = 0.0
 [node name="shoot_sound" type="SamplePlayer" parent="."]
 
 config/polyphony = 1
-config/samples = SubResource( 2 )
+config/samples = SubResource( 4 )
 default/volume_db = -25.0
 default/pitch_scale = 1.0
 default/pan = 0.0
@@ -145,7 +162,7 @@ margin/left = -50.0
 margin/top = 50.0
 margin/right = 50.0
 margin/bottom = 34.0
-custom_styles/fg = SubResource( 3 )
+custom_styles/fg = SubResource( 5 )
 range/min = 0.0
 range/max = 100.0
 range/step = 1.0
