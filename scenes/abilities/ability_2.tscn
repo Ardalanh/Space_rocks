@@ -6,11 +6,13 @@
 
 script/script = ExtResource( 1 )
 
-[node name="blink_duration" type="Timer" parent="."]
+[node name="duration" type="Timer" parent="."]
 
 process_mode = 1
 wait_time = 0.2
 one_shot = true
 autostart = false
+
+[connection signal="timeout" from="duration" to="." method="_on_duration_timeout"]
 
 

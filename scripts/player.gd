@@ -18,6 +18,7 @@ var acc = Vector2(0, 0)
 var shoot_key_pressed = false
 var dead = false
 var respawn_time = 10
+var camera_offset = Vector2()
 
 var MAIN_THRUST = 1200
 var MAX_VEL = 300
@@ -36,6 +37,8 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("player_ability_1"):
+		cast_ability(1)
+	if event.is_action_pressed("player_ability_2"):
 		cast_ability(2)
 	if event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
@@ -51,11 +54,12 @@ func _process(delta):
 
 func _fixed_process(delta):
 	var mouse_pos = get_global_mouse_pos()
-	look_at(mouse_pos)
+	var mouse_angel = get_angle_to(mouse_pos)
+	rotate(clamp(mouse_angel,-0.2,0.2))
 
 	var distance_to_mouse = mouse_pos - get_pos()
 	var direction_to_mouse = distance_to_mouse.normalized()
-	camera_offset(distance_to_mouse)
+	move_camera(distance_to_mouse, delta)
 
 	if Input.is_action_pressed("player_thrust"):
 		acc = direction_to_mouse * MAIN_THRUST
@@ -117,16 +121,19 @@ func alive():
 	emit_signal("player_alive")
 	get_node("camera").make_current()
 
-func camera_offset(mouse_dist):
-	var max_offset = (screen_size * 2).length()
+func set_collision_trigger(flag):
+	get_node("collision").set_trigger(flag)
 
+func move_camera(mouse_dist, delta):
+	var max_offset = (screen_size * 2).length()
 	var mouse_len = clamp(mouse_dist.length(), 5, max_offset)
 	mouse_len = (1/max_offset) * pow(mouse_len, 2)
 	var offset_ratio = mouse_len/mouse_dist.length()
-	player_camera.set_offset(mouse_dist * offset_ratio)
+	var desired_offset = mouse_dist * offset_ratio
+	camera_offset += (desired_offset - camera_offset) * delta * 10
+	player_camera.set_offset(camera_offset)
 
 func _on_respawn_time_timeout():
-	print("time out")
 	alive()
 
 func cast_ability(index):

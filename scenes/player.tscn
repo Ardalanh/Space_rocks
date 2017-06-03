@@ -11,7 +11,7 @@
 custom_solver_bias = 0.0
 radius = 44.0
 
-[sub_resource type="SampleLibrary" id=4]
+[sub_resource type="SampleLibrary" id=2]
 
 samples/shoot1 = {
 "db": 0.0,
@@ -26,7 +26,7 @@ samples/shoot2 = {
 "sample": ExtResource( 5 )
 }
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=3]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -96,8 +96,8 @@ limit/right = 10000000
 limit/bottom = 10000000
 drag_margin/h_enabled = true
 drag_margin/v_enabled = true
-smoothing/enable = false
-smoothing/speed = 1.0
+smoothing/enable = true
+smoothing/speed = 5.0
 drag_margin/left = 0.0
 drag_margin/top = 0.0
 drag_margin/right = 0.0
@@ -106,7 +106,7 @@ drag_margin/bottom = 0.0
 [node name="shoot_sound" type="SamplePlayer" parent="."]
 
 config/polyphony = 1
-config/samples = SubResource( 4 )
+config/samples = SubResource( 2 )
 default/volume_db = -25.0
 default/pitch_scale = 1.0
 default/pan = 0.0
@@ -145,7 +145,7 @@ margin/left = -50.0
 margin/top = 50.0
 margin/right = 50.0
 margin/bottom = 34.0
-custom_styles/fg = SubResource( 5 )
+custom_styles/fg = SubResource( 3 )
 range/min = 0.0
 range/max = 100.0
 range/step = 1.0
