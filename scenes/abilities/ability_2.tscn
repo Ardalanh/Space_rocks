@@ -13,13 +13,6 @@ wait_time = 0.1
 one_shot = true
 autostart = false
 
-[node name="effect_timer" type="Timer" parent="."]
-
-process_mode = 1
-wait_time = 0.001
-one_shot = false
-autostart = false
-
 [connection signal="timeout" from="duration" to="." method="_on_duration_timeout"]
 
 

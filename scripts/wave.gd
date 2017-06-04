@@ -4,7 +4,6 @@ signal wave_done
 signal number_of_enemies
 
 var explosion = preload("res://scenes/explosion.tscn")
-#var enemy_factory = preload("res://scenes/enemy_wave.tscn").instance()
 
 onready var enemy_container = get_node("enemy_container")
 onready var spawn_rate = get_node("spawn_rate")

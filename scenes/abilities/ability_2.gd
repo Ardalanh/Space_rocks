@@ -1,7 +1,6 @@
 extends Node2D
 
 onready var timer = get_node("duration")
-onready var effect_timer = get_node("effect_timer")
 
 var player
 var player_rot
@@ -26,15 +25,14 @@ func __init__(player_obj):
 	player.set_process_input(false)
 	player.set_layer_mask(4)
 	player.set_collision_mask(4)
-
-#	player.look_at(blink_pos)
+	player.vel = Vector2()
+	player.acc = Vector2()
 
 	VEL = Vector2(MAX_VEL, 0).rotated(player_rot)
 	timer.start()
 
 	set_pos(player.get_pos())
 	texture = player.get_node("ship").get_texture()
-	effect_timer.start()
 
 	set_fixed_process(true)
 	set_process(true)
@@ -65,4 +63,5 @@ func _on_duration_timeout():
 	player.set_process_input(true)
 	player.set_layer_mask(player_layers)
 	player.set_collision_mask(player_collisions)
+	player.vel = Vector2(MAX_VEL, 0).rotated(player_rot)
 	queue_free()

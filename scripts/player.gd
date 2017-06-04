@@ -34,7 +34,6 @@ func _ready():
 	set_fixed_process(true)
 	set_process(true)
 	set_process_input(true)
-	get_node("ship")
 
 func _input(event):
 	if event.is_action_pressed("player_ability_1"):
@@ -121,9 +120,6 @@ func alive():
 	get_node("collision").set_trigger(false)
 	emit_signal("player_alive")
 	get_node("camera").make_current()
-
-func set_collision_trigger(flag):
-	get_node("collision").set_trigger(flag)
 
 func move_camera(mouse_dist, delta):
 	var max_offset = (screen_size * 2).length()
