@@ -34,6 +34,7 @@ func _ready():
 	set_fixed_process(true)
 	set_process(true)
 	set_process_input(true)
+	get_node("ship")
 
 func _input(event):
 	if event.is_action_pressed("player_ability_1"):
