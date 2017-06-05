@@ -19,6 +19,7 @@ var shoot_key_pressed = false
 var dead = false
 var respawn_time = 10
 var camera_offset = Vector2()
+onready var respawn_pos = get_pos()
 
 var MAIN_THRUST = 1200
 var MAX_VEL = 300
@@ -93,6 +94,10 @@ func shoot():
 	shoot_sound.play("shoot1", true)
 
 func take_damage(damage):
+#	var damage_color = CanvasModulate.new()
+#	damage_color.set_as_toplevel(true)
+#	damage_color.set_color(Color(200,0,0,0.9))
+#	add_child(damage_color)
 	health_point = health_point - damage
 	if health_point <= 0 and not dead:
 		dead()
@@ -111,12 +116,12 @@ func dead():
 
 func alive():
 	dead = false
-	pos = Vector2()
+	pos = respawn_pos
 	vel = Vector2()
-	acc = Vector2(0, 0)
+	acc = Vector2()
 	shoot_key_pressed = false
 	_ready()
-	show()
+	self.show() #default function
 	get_node("collision").set_trigger(false)
 	emit_signal("player_alive")
 	get_node("camera").make_current()
@@ -129,9 +134,6 @@ func move_camera(mouse_dist, delta):
 	var desired_offset = mouse_dist * offset_ratio
 	camera_offset += (desired_offset - camera_offset) * delta * 10
 	player_camera.set_offset(camera_offset)
-
-func _on_respawn_time_timeout():
-	alive()
 
 func cast_ability(index):
 	var ability = generate_ability(index)

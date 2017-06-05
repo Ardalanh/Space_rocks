@@ -2,6 +2,7 @@ extends Node2D
 
 onready var timer = get_node("duration")
 
+var fade = false
 var player
 var player_rot
 var player_layers
@@ -23,6 +24,7 @@ func __init__(player_obj):
 
 	player.set_fixed_process(false)
 	player.set_process_input(false)
+	player.remove_from_group("player")
 	player.set_layer_mask(4)
 	player.set_collision_mask(4)
 	player.vel = Vector2()
@@ -38,7 +40,13 @@ func __init__(player_obj):
 	set_process(true)
 
 func _process(delta):
-	set_effect()
+	if fade == true:
+		if get_node("sprite_container").get_child_count()==0:
+			queue_free()
+			return 0
+		get_node("sprite_container").get_child(0).queue_free()
+	else:
+		set_effect()
 
 func _fixed_process(delta):
 	var distance_to_blink = blink_pos - player.get_pos()
@@ -49,19 +57,21 @@ func _fixed_process(delta):
 
 func set_effect():
 	my_sprite = Sprite.new()
-	add_child(my_sprite)
+	get_node("sprite_container").add_child(my_sprite)
 	my_sprite.set_texture(texture)
 	my_sprite.set_as_toplevel(true)
 	my_sprite.set_global_pos(get_global_pos())
 	my_sprite.set_modulate(Color(200,0,0))
-	my_sprite.set_opacity(0.7)
+	my_sprite.set_opacity(0.5)
 	my_sprite.set_rot(player_rot - PI/2)
 	my_sprite.set_scale(player.get_scale())
 
 func _on_duration_timeout():
+	set_fixed_process(false)
+	fade = true
 	player.set_fixed_process(true)
 	player.set_process_input(true)
+	player.add_to_group("player")
 	player.set_layer_mask(player_layers)
 	player.set_collision_mask(player_collisions)
 	player.vel = Vector2(MAX_VEL, 0).rotated(player_rot)
-	queue_free()

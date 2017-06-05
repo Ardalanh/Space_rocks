@@ -13,6 +13,7 @@ export (PackedScene) var bullet
 onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate = get_node("bullet_rate")
 onready var HP_BAR = get_node("control/hp_bar")
+onready var action_timer = get_node("action")
 
 const MAIN_THRUST = 150
 const MAX_VEL = 300
@@ -20,30 +21,33 @@ const MAIN_TARGET_AGRO_RANGE = 600
 const ATTACK_RANGE = 300
 const ROT_SPEED = 5
 const STOPING_FRICTION = 2
+const FLEE_FORCE = 50
 
 var pos = Vector2()
 var vel = Vector2()
 var acc = Vector2(0, 0)
 
 var target_list = []
+var near_enemies_list = []
 var main_target
 var planet_pos
 var planet_radius
 
 var health_point = 1000
-export var damage = 1
+export var damage = 60
 var state = _States.follow_planet
 
 func start_at(pos, planet_p, planet_r):
+	randomize()
+	damage += randi()%10
 	HP_BAR.set_val(health_point)
 	set_pos(pos)
-	randomize()
-	set_process(true)
+	set_fixed_process(true)
 	planet_pos = planet_p
 	planet_radius = planet_r
 	look_at(planet_pos)
 
-func _process(delta):
+func _fixed_process(delta):
 	if state == _States.follow_planet:
 		follow_planet_state(delta)
 	elif state == _States.attack_planet:
@@ -64,12 +68,14 @@ func _process(delta):
 	var motion = move(vel * delta)
 
 	if is_colliding():
-		var spread = pow(-1,randi()%2)
-		var coll = get_collider()
-		if coll.is_in_group('enemy'):
-			coll.vel = vel.tangent().normalized() * 50 * spread
-		vel = vel.tangent().normalized() * 50 * spread * -1
 		move(get_collision_normal().slide(motion))
+
+	#pushing near enemies away
+	for e in near_enemies_list:
+		var flee_dir = e.get_pos() - get_pos()
+		var flee_dist = flee_dir.length()
+		flee_dir = flee_dir.normalized()
+		e.vel += flee_dir * FLEE_FORCE/flee_dist
 
 func follow_planet_state(delta):
 	steer(planet_pos, planet_radius)
@@ -83,7 +89,6 @@ func follow_planet_state(delta):
 
 func attack_planet_state(delta):
 	steer(planet_pos, planet_radius)
-#	set_acceleration(planet_pos, false) #false for decelerating
 
 	look_at_target(delta, planet_pos)
 	shoot()
@@ -96,7 +101,7 @@ func find_target_state():
 		state = _States.follow_planet
 		return 0
 	for target in target_list:
-		if target.get_name() == 'player':
+		if target.is_in_group('player'):
 			main_target = target
 	state = _States.chase_target
 
@@ -109,7 +114,6 @@ func chase_target_state(delta):
 
 	var main_target_pos = main_target.get_pos()
 	steer(main_target_pos)
-#	set_acceleration(main_target_pos)
 
 	look_at_target(delta, main_target_pos)
 
@@ -130,7 +134,6 @@ func chase_attack_state(delta):
 	var main_target_pos = main_target.get_pos()
 
 	steer(main_target_pos)
-#	set_acceleration(main_target_pos)
 
 	look_at_target(delta, main_target_pos)
 
@@ -139,6 +142,10 @@ func chase_attack_state(delta):
 		shoot()
 	else:
 		state = _States.chase_target
+		return 0
+
+	if action_timer.get_wait_time() == 0:
+		action_timer.start()
 
 func attack_action_state():
 	pass
@@ -174,30 +181,14 @@ func steer(target, target_raduis=0):
 		steer = steer.normalized() * MAIN_THRUST
 	acc = steer
 
-#func follow_target(delta, target_pos):
-#	var target_dis = target_pos - get_pos()
-#	var target_dir = target_dis.normalized()
-#	target_dis = target_dis.length()
-#	var target_angel = get_angle_to(target_pos)
-#
-#	rotate(target_angel * ROT_SPEED * delta)
-#	target_angel = rad2deg(target_angel)
-#	if target_angel < ACCURACY and target_angel > -ACCURACY and bullet_rate.get_time_left() == 0 and target_dis < 400:
-#		shoot()
-#
-#	if target_dis < 300:
-#		return target_dir * -vel
-#	else:
-#		return target_dir * MAIN_THRUST
-
 func shoot():
-
 	if bullet_rate.get_time_left() == 0:
 		bullet_rate.start()
 		var b = bullet.instance()
 		bullet_container.add_child(b)
 		b.damage = damage
 		b.start_at(get_rot() + rand_range(-PI/36, PI/36), get_node("gun").get_global_pos(), main_target)
+		vel += Vector2(50, 0).rotated(get_rot() + PI/2)
 
 func explode():
 	queue_free()
@@ -215,3 +206,15 @@ func _on_Area2D_body_enter( body ):
 		state = _States.find_target
 		if not target_list.has(body):
 			target_list.append(body)
+	elif body.is_in_group("enemy") and (body.get_name() != get_name()) :
+		if not near_enemies_list.has(body):
+			near_enemies_list.append(body)
+
+func _on_agro_range_body_exit( body ):
+	if body.is_in_group("enemy"):
+		if near_enemies_list.has(body):
+			near_enemies_list.erase(body)
+
+func _on_action_timeout():
+	if state == _States.chase_attack:
+		state = _States.attack_action

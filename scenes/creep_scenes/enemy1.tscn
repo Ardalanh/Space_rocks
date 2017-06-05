@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://scripts/enemy1.gd" type="Script" id=1]
-[ext_resource path="res://scenes/enemy_bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/creep_scenes/enemy_bullet1.tscn" type="PackedScene" id=2]
 [ext_resource path="res://art/PNG/enemyBlack1.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -67,7 +67,7 @@ transform/pos = Vector2( 0, 40 )
 [node name="bullet_rate" type="Timer" parent="."]
 
 process_mode = 1
-wait_time = 1.3
+wait_time = 0.5
 one_shot = true
 autostart = false
 
@@ -114,8 +114,8 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
-collision/layers = 2
-collision/mask = 2
+collision/layers = 3
+collision/mask = 3
 
 [node name="collision" type="CollisionShape2D" parent="agro_range"]
 
@@ -123,6 +123,17 @@ shape = SubResource( 3 )
 trigger = true
 _update_shape_index = 0
 
+[node name="action" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
 [connection signal="body_enter" from="agro_range" to="." method="_on_Area2D_body_enter"]
+
+[connection signal="body_exit" from="agro_range" to="." method="_on_agro_range_body_exit"]
+
+[connection signal="timeout" from="action" to="." method="_on_action_timeout"]
 
 

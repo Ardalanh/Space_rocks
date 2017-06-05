@@ -15,7 +15,7 @@ script/script = ExtResource( 1 )
 
 [node name="player" parent="." instance=ExtResource( 3 )]
 
-transform/pos = Vector2( 353.013, -221.165 )
+transform/pos = Vector2( 342.13, -180.354 )
 
 [node name="parallax" parent="." instance=ExtResource( 4 )]
 

@@ -37,7 +37,7 @@ animations = [ {
 } ]
 
 [node name="planet" type="StaticBody2D" groups=[
-"player",
+"planet",
 ]]
 
 input/pickable = false
@@ -59,7 +59,7 @@ __meta__ = {
 
 frames = SubResource( 2 )
 animation = "default"
-frame = 18
+frame = 12
 playing = true
 
 [node name="collision" type="CollisionShape2D" parent="."]
