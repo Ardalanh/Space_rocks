@@ -34,12 +34,12 @@ var planet_pos
 var planet_radius
 
 var health_point = 1000
-export var damage = 2
+export var damage = 4
 var state = _States.follow_planet
 
 func start_at(pos, planet_p, planet_r):
 	randomize()
-	damage += randi()%2
+#	damage += randi()%5
 	HP_BAR.set_val(health_point)
 	set_pos(pos)
 	set_fixed_process(true)

@@ -38,6 +38,8 @@ wait_time = 2.0
 one_shot = true
 autostart = false
 
+[connection signal="body_enter" from="." to="." method="_on_enemy_bullet2_body_enter"]
+
 [connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]
 
 

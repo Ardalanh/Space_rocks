@@ -16,11 +16,11 @@ func start_at(dir, pos):
 func _process(delta):
 	set_pos(get_pos() + vel * delta)
 
-func _on_enemy_bullet_body_enter( body ):
-	if body.is_in_group("player") or body.is_in_group("planet"):
-		body.take_damage(damage)
-		queue_free()
-
-
 func _on_timer_timeout():
 	queue_free()
+
+
+func _on_enemy_bullet2_body_enter( body ):
+	if body.is_in_group("player"):
+		body.take_damage(damage)
+		queue_free()

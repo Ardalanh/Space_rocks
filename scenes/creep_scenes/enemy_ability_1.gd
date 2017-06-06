@@ -13,5 +13,5 @@ func shoot():
 	for i in range(-45, 45, 5):
 		var b = bullet.instance()
 		enemy.bullet_container.add_child(b)
-		b.damage = enemy.damage
+		b.damage = enemy.damage * 2.25
 		b.start_at(deg2rad(i) + rot, enemy.get_node("gun").get_global_pos())
