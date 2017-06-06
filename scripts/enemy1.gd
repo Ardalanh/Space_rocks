@@ -34,12 +34,12 @@ var planet_pos
 var planet_radius
 
 var health_point = 1000
-export var damage = 60
+export var damage = 2
 var state = _States.follow_planet
 
 func start_at(pos, planet_p, planet_r):
 	randomize()
-	damage += randi()%10
+	damage += randi()%2
 	HP_BAR.set_val(health_point)
 	set_pos(pos)
 	set_fixed_process(true)
@@ -130,6 +130,7 @@ func chase_attack_state(delta):
 		state = _States.find_target
 		target_list.erase(main_target)
 		main_target = null
+		action_timer.stop()
 		return 0
 	var main_target_pos = main_target.get_pos()
 
@@ -142,13 +143,15 @@ func chase_attack_state(delta):
 		shoot()
 	else:
 		state = _States.chase_target
+		action_timer.stop()
 		return 0
 
-	if action_timer.get_wait_time() == 0:
+	if action_timer.get_time_left() == 0:
 		action_timer.start()
 
 func attack_action_state():
-	pass
+	cast_ability(1)
+	state = _States.chase_attack
 
 func look_at_target(delta, target_pos):
 	var angle_to_target = get_angle_to(target_pos)
@@ -188,7 +191,7 @@ func shoot():
 		bullet_container.add_child(b)
 		b.damage = damage
 		b.start_at(get_rot() + rand_range(-PI/36, PI/36), get_node("gun").get_global_pos(), main_target)
-		vel += Vector2(50, 0).rotated(get_rot() + PI/2)
+#		vel += Vector2(50, 0).rotated(get_rot() + PI/2)
 
 func explode():
 	queue_free()
@@ -218,3 +221,11 @@ func _on_agro_range_body_exit( body ):
 func _on_action_timeout():
 	if state == _States.chase_attack:
 		state = _States.attack_action
+
+func cast_ability(index):
+	var ability = generate_ability(index)
+	bullet_container.add_child(ability)
+	ability.__init__(self)
+
+func generate_ability(index):
+	return load("res://scenes/creep_scenes/enemy_ability_%d.tscn"%index).instance()

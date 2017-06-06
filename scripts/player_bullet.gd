@@ -28,3 +28,4 @@ func _on_player_bullet_body_enter( body ):
 	if body.is_in_group("enemy"):
 		queue_free()
 		body.take_damage(damage)
+		body.vel += vel.normalized() * 100

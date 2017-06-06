@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://scripts/enemy1.gd" type="Script" id=1]
-[ext_resource path="res://scenes/creep_scenes/enemy_bullet1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/creep_scenes/enemy_bullet_1.tscn" type="PackedScene" id=2]
 [ext_resource path="res://art/PNG/enemyBlack1.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -126,8 +126,8 @@ _update_shape_index = 0
 [node name="action" type="Timer" parent="."]
 
 process_mode = 1
-wait_time = 1.0
-one_shot = false
+wait_time = 3.0
+one_shot = true
 autostart = false
 
 [connection signal="body_enter" from="agro_range" to="." method="_on_Area2D_body_enter"]
