@@ -17,7 +17,7 @@ var vel = Vector2()
 var acc = Vector2(0, 0)
 var shoot_key_pressed = false
 var dead = false
-var respawn_time = 10
+var respawn_time = 3
 var camera_offset = Vector2()
 onready var respawn_pos = get_pos()
 
@@ -108,7 +108,9 @@ func dead():
 	set_fixed_process(false)
 	set_process_unhandled_input(false)
 	hide()
-	get_node("collision").set_trigger(true)
+#	get_node("collision").set_trigger(true)
+	set_layer_mask(0)
+	set_collision_mask(0)
 	get_node("camera").clear_current()
 	emit_signal("player_dead", respawn_time)
 	get_node("respawn_time").set_wait_time(respawn_time)
@@ -116,13 +118,15 @@ func dead():
 
 func alive():
 	dead = false
-	pos = respawn_pos
+	set_pos(respawn_pos)
 	vel = Vector2()
 	acc = Vector2()
 	shoot_key_pressed = false
 	_ready()
 	self.show() #default function
-	get_node("collision").set_trigger(false)
+#	get_node("collision").set_trigger(false)
+	set_layer_mask(3)
+	set_collision_mask(3)
 	emit_signal("player_alive")
 	get_node("camera").make_current()
 

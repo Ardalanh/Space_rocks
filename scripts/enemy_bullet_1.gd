@@ -23,6 +23,9 @@ func start_at(dir, pos, target_obj):
 func _process(delta):
 	var pos = get_pos()
 	if target:
+		if target.dead:
+			queue_free()
+			return 0
 		var target_pos =target.get_pos()
 		look_at(target_pos)
 		pos += (target_pos - pos).normalized() * speed * delta
