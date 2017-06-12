@@ -14,6 +14,7 @@ onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate = get_node("bullet_rate")
 onready var HP_BAR = get_node("control/hp_bar")
 onready var action_timer = get_node("action")
+onready var animation = get_node("animation")
 
 const MAIN_THRUST = 150
 const MAX_VEL = 300
@@ -131,6 +132,7 @@ func chase_attack_state(delta):
 		target_list.erase(main_target)
 		main_target = null
 		action_timer.stop()
+		stop_animation()
 		return 0
 	var main_target_pos = main_target.get_pos()
 
@@ -144,9 +146,11 @@ func chase_attack_state(delta):
 	else:
 		state = _States.chase_target
 		action_timer.stop()
+		stop_animation()
 		return 0
 
 	if action_timer.get_time_left() == 0:
+		play_animation()
 		action_timer.start()
 
 func attack_action_state():
@@ -229,3 +233,13 @@ func cast_ability(index):
 
 func generate_ability(index):
 	return load("res://scenes/creep_scenes/enemy_ability_%d.tscn"%index).instance()
+
+func play_animation():
+	animation.set_speed(1)
+	animation.play("ability_1")
+
+func stop_animation():
+	var seek = animation.get_current_animation_pos()
+	animation.play_backwards("ability_1")
+	animation.seek(seek)
+	animation.set_speed(3)
