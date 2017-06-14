@@ -34,7 +34,7 @@ func __init__(player_obj):
 	timer.start()
 
 	set_pos(player.get_pos())
-	texture = player.get_node("ship").get_texture()
+	texture = player.get_node("sprite").get_texture()
 
 	set_fixed_process(true)
 	set_process(true)

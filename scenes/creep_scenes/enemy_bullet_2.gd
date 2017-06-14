@@ -19,7 +19,6 @@ func _process(delta):
 func _on_timer_timeout():
 	queue_free()
 
-
 func _on_enemy_bullet2_body_enter( body ):
 	if body.is_in_group("player"):
 		body.take_damage(damage)

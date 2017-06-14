@@ -9,7 +9,9 @@ custom_solver_bias = 0.0
 radius = 2.42101
 height = 16.0522
 
-[node name="enemy_bullet2" type="Area2D"]
+[node name="enemy_bullet2" type="Area2D" groups=[
+"enemy_bullet",
+]]
 
 input/pickable = true
 shapes/0/shape = SubResource( 1 )
@@ -34,7 +36,7 @@ _update_shape_index = 0
 [node name="timer" type="Timer" parent="."]
 
 process_mode = 1
-wait_time = 2.0
+wait_time = 1.0
 one_shot = true
 autostart = false
 

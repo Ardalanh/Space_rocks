@@ -10,7 +10,8 @@ func __init__(enemy_obj):
 
 func shoot():
 	var rot = enemy.get_rot()
-	for i in range(-45, 45, 5):
+	enemy.vel += -1 * Vector2(100, 0).rotated(rot - PI/2)
+	for i in range(-18, 18, 2):
 		var b = bullet.instance()
 		enemy.bullet_container.add_child(b)
 		b.damage = enemy.damage * 2.25

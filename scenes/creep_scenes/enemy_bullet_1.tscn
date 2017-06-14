@@ -8,7 +8,9 @@
 custom_solver_bias = 0.0
 radius = 5.07058
 
-[node name="enemy_bullet_1" type="Area2D"]
+[node name="enemy_bullet_1" type="Area2D" groups=[
+"enemy_bullet",
+]]
 
 transform/scale = Vector2( 0.5, 0.5 )
 input/pickable = true

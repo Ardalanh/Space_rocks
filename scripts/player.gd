@@ -4,6 +4,9 @@ signal player_dead
 signal player_alive
 
 export (PackedScene) var bullet
+var ability_1 = preload("res://scenes/abilities/ability_1.tscn")
+var ability_2 = preload("res://scenes/abilities/ability_2.tscn")
+var ability_3 = preload("res://scenes/abilities/ability_3.tscn")
 onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate = get_node("bullet_rate")
 onready var shoot_sound = get_node("shoot_sound")
@@ -25,6 +28,7 @@ var MAIN_THRUST = 1200
 var MAX_VEL = 300
 var damage = 500
 var MAX_HP = 500
+var health_reg = 0
 var health_point
 
 func _ready():
@@ -41,6 +45,8 @@ func _input(event):
 		cast_ability(1)
 	if event.is_action_pressed("player_ability_2"):
 		cast_ability(2)
+	if event.is_action_pressed("player_ability_3"):
+		cast_ability(3)
 	if event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
 	if event.is_action_pressed("player_shoot"):
@@ -51,6 +57,8 @@ func _process(delta):
 	if shoot_key_pressed  and bullet_rate.get_time_left() == 0:
 		shoot()
 
+	health_point += health_reg * delta
+	health_point = clamp(health_point, 0, MAX_HP)
 	HP_BAR.set_val(health_point)
 
 func _fixed_process(delta):
@@ -142,10 +150,18 @@ func move_camera(mouse_dist, delta):
 func cast_ability(index):
 	var ability = generate_ability(index)
 	bullet_container.add_child(ability)
-	if index == 1:
-		ability.start_at(get_rot(), get_node("gun").get_global_pos(), get_global_mouse_pos())
-	elif index == 2:
-		ability.__init__(self)
+	ability.__init__(self)
 
 func generate_ability(index):
-	return load("res://scenes/abilities/ability_%d.tscn"%index).instance()
+	if index == 1:
+		return ability_1.instance()
+	elif index == 2:
+		return ability_2.instance()
+	elif index == 3:
+		return ability_3.instance()
+
+func set_bullet_rate(num):
+	bullet_rate.set_wait_time(num)
+
+func get_bullet_rate():
+	return bullet_rate.get_wait_time()

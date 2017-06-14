@@ -18,7 +18,7 @@ onready var animation = get_node("animation")
 
 const MAIN_THRUST = 150
 const MAX_VEL = 300
-const MAIN_TARGET_AGRO_RANGE = 600
+const MAIN_TARGET_AGRO_RANGE = 800
 const ATTACK_RANGE = 300
 const ROT_SPEED = 5
 const STOPING_FRICTION = 2
@@ -175,9 +175,9 @@ func steer(target, target_raduis=0):
 	var desired = target - get_pos()
 	var distance_to_target = desired.length() - target_raduis
 	desired = desired.normalized()
-	if distance_to_target > ATTACK_RANGE :
+	if distance_to_target > (ATTACK_RANGE) * 0.6 :
 		desired *= MAX_VEL
-	elif distance_to_target < (ATTACK_RANGE) * 0.5:
+	elif distance_to_target < (ATTACK_RANGE) * 0.3:
 		desired *= ((distance_to_target)  * MAX_VEL * -0.5 / ATTACK_RANGE)
 	else:
 		acc = -vel * STOPING_FRICTION

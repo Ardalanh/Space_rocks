@@ -9,7 +9,7 @@ onready var sprite = get_node("sprite")
 
 func _ready():
 	effect.interpolate_property(sprite, 'visibility/opacity',
-	                            1, 1, 4, Tween.TRANS_QUAD,
+	                            1, 1, 1, Tween.TRANS_QUAD,
 	                            Tween.EASE_IN)
 	effect.start()
 	set_process(true)
