@@ -12,6 +12,7 @@ onready var bullet_rate = get_node("bullet_rate")
 onready var shoot_sound = get_node("shoot_sound")
 onready var player_camera = get_node("camera")
 onready var HP_BAR = get_node("control/hp_bar")
+onready var ability = get_node("ability_node")
 
 var screen_size
 var rot = 0
@@ -42,11 +43,14 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("player_ability_1"):
-		cast_ability(1)
+		ability.cast(1)
+#		cast_ability(1)
 	if event.is_action_pressed("player_ability_2"):
-		cast_ability(2)
+		ability.cast(2)
+#		cast_ability(2)
 	if event.is_action_pressed("player_ability_3"):
-		cast_ability(3)
+		ability.cast(3)
+#		cast_ability(3)
 	if event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
 	if event.is_action_pressed("player_shoot"):

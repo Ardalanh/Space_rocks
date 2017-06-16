@@ -2,16 +2,21 @@ extends Area2D
 
 var player
 var player_rot
-var duration = 5
+var duration = [2,3,4,5]
+
+var current_level = 0
+var cooldown = [10,10,10,10] setget ,get_cooldown
+
 onready var animation = get_node("animation")
 onready var timer = get_node("timer")
 onready var particle = get_node("particle")
 onready var particle_container = get_node("particle_container")
 
-func __init__(player_obj):
+func __init__(player_obj, level):
+	current_level = level - 1
 	animation.play("init")
 	animation.queue("idle")
-	timer.set_wait_time(duration - 1)
+	timer.set_wait_time(duration[current_level] - 1)
 	timer.start()
 	player = player_obj
 	set_process(true)
@@ -36,3 +41,6 @@ func _on_ability_1_area_enter( area ):
 func _on_animation_finished():
 	if animation.get_current_animation()=="end":
 		queue_free()
+
+func get_cooldown():
+	return cooldown[current_level]

@@ -123,6 +123,7 @@ default/chorus_send = 0.0
 
 [node name="control" type="Control" parent="."]
 
+editor/display_folded = true
 anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true

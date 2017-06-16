@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://scripts/game_loop.gd" type="Script" id=1]
 [ext_resource path="res://scenes/hud.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/parallax.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/wave.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/planet.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/abilities/ability_node.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/parallax.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/wave.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/planet.tscn" type="PackedScene" id=7]
 
 [node name="game_loop" type="Node"]
 
@@ -17,9 +18,11 @@ script/script = ExtResource( 1 )
 
 transform/pos = Vector2( 342.13, -180.354 )
 
-[node name="parallax" parent="." instance=ExtResource( 4 )]
+[node name="ability_node" parent="player" instance=ExtResource( 4 )]
 
-[node name="wave" parent="." instance=ExtResource( 5 )]
+[node name="parallax" parent="." instance=ExtResource( 5 )]
+
+[node name="wave" parent="." instance=ExtResource( 6 )]
 
 [node name="restart_timer" type="Timer" parent="."]
 
@@ -51,7 +54,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="planet" parent="." instance=ExtResource( 6 )]
+[node name="planet" parent="." instance=ExtResource( 7 )]
 
 editor/display_folded = true
 collision/layers = 5
@@ -66,6 +69,8 @@ collision/mask = 5
 [connection signal="player_alive" from="player" to="." method="_on_player_player_alive"]
 
 [connection signal="player_dead" from="player" to="." method="_on_player_player_dead"]
+
+[connection signal="ability_casted" from="player/ability_node" to="hud" method="_on_ability_node_ability_casted"]
 
 [connection signal="number_of_enemies" from="wave" to="hud" method="_on_wave_number_of_enemies"]
 

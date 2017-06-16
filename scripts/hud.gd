@@ -12,6 +12,7 @@ signal wave_timeout
 onready var wave_label = get_node("next_wave")
 onready var enemy_remain = get_node("enemy_remain")
 onready var wave_timer = get_node("next_wave/next_wave_timer")
+onready var ability_container = get_node("panel/ability_container")
 onready var respawn
 onready var respawn_timer
 onready var planet_hp = get_node("panel/planet_hp")
@@ -67,13 +68,15 @@ func _on_timer_timeout():
 	respawn.hide()
 	respawn.set_text('')
 
-func _on_button_1_button_down():
-	Input.action_press("player_ability_1")
-	print("WE PRESSED")
-
 func set_planet_max_hp(max_hp):
 	planet_hp.set_max(max_hp)
 
 func set_planet_hp(hp):
 	planet_hp.set_value(hp)
 	get_node("panel/planet_hp/hp").set_text(str(hp))
+
+func _on_ability_node_ability_casted(name, cd):
+	var ability = ability_container.get_node(name)
+	ability.get_node("cd_timer").set_wait_time(cd)
+	ability.get_node("cd_timer").start()
+	ability.get_node("cd_mask").set_max(cd)
