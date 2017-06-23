@@ -8,7 +8,7 @@ var explosion = preload("res://scenes/explosion.tscn")
 onready var enemy_container = get_node("enemy_container")
 onready var spawn_rate = get_node("spawn_rate")
 onready var spawn_node = get_node("spawn_pos")
-var number_of_units = 24
+var number_of_units = 18
 var player
 var planet_pos
 var planet_radius
@@ -55,9 +55,6 @@ func spawn():
 		change_spawn_pos()
 
 func _on_wave_timeout():
-	number_of_units = 18
-	r = 1500
-	theta = 0
 	set_process(true)
 
 func _on_planet_planet_pos_signal(planet_p, planet_r):

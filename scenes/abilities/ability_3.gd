@@ -5,7 +5,7 @@ onready var timer = get_node("timer")
 var current_level = 0
 var cooldown = [30, 25, 20, 15] setget ,get_cooldown
 var bullet_rate_multiple = [0.7, 0.6, 0.5, 0.4]
-var regenration = [70, 80, 90, 100]
+var regenration = [40, 60, 80, 100]
 var duration = [3, 4, 5, 6]
 
 var player
@@ -13,7 +13,7 @@ var player_sprite
 var player_modulate
 
 func __init__(player_obj, level):
-	current_level = level
+	current_level = level - 1
 	player = player_obj
 	timer.set_wait_time(duration[current_level])
 	timer.start()

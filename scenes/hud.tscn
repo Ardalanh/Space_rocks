@@ -1,12 +1,11 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=10 format=1]
 
 [ext_resource path="res://scripts/hud.gd" type="Script" id=1]
 [ext_resource path="res://font/font1.fnt" type="BitmapFont" id=2]
 [ext_resource path="res://scenes/hud/ability_container.gd" type="Script" id=3]
 [ext_resource path="res://scenes/abilities/ability_1.tex" type="Texture" id=4]
-[ext_resource path="res://art/button/Sword_002.tex" type="Texture" id=5]
-[ext_resource path="res://scenes/abilities/ability_2.tex" type="Texture" id=6]
-[ext_resource path="res://scenes/abilities/ability_3.tex" type="Texture" id=7]
+[ext_resource path="res://scenes/abilities/ability_2.tex" type="Texture" id=5]
+[ext_resource path="res://scenes/abilities/ability_3.tex" type="Texture" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -41,7 +40,9 @@ content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
 
-[node name="hud" type="CanvasLayer"]
+[node name="hud" type="CanvasLayer" groups=[
+"hud",
+]]
 
 process/pause_mode = 2
 layer = 1
@@ -137,6 +138,7 @@ max_lines_visible = -1
 [node name="next_wave" type="Label" parent="."]
 
 process/pause_mode = 1
+editor/display_folded = true
 anchor/left = 2
 anchor/right = 2
 focus/ignore_mouse = true
@@ -220,6 +222,7 @@ max_lines_visible = -1
 
 [node name="ability_container" type="HBoxContainer" parent="panel"]
 
+editor/display_folded = true
 anchor/left = 2
 anchor/right = 2
 anchor/bottom = 1
@@ -250,7 +253,6 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 textures/normal = ExtResource( 4 )
-textures/pressed = ExtResource( 5 )
 params/resize_mode = 1
 params/stretch_mode = 1
 
@@ -259,7 +261,7 @@ params/stretch_mode = 1
 visibility/self_opacity = 0.8
 anchor/right = 1
 anchor/bottom = 1
-focus/ignore_mouse = false
+focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
@@ -285,6 +287,22 @@ wait_time = 1.0
 one_shot = true
 autostart = false
 
+[node name="cd_label" type="Label" parent="panel/ability_container/ability_1"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 15.0
+margin/bottom = 15.0
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
 [node name="ability_2" type="TextureButton" parent="panel/ability_container"]
 
 rect/min_size = Vector2( 50, 50 )
@@ -299,8 +317,7 @@ margin/bottom = 60.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 6 )
-textures/pressed = ExtResource( 5 )
+textures/normal = ExtResource( 5 )
 params/resize_mode = 1
 params/stretch_mode = 1
 
@@ -309,7 +326,7 @@ params/stretch_mode = 1
 visibility/self_opacity = 0.8
 anchor/right = 1
 anchor/bottom = 1
-focus/ignore_mouse = false
+focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
@@ -335,6 +352,20 @@ wait_time = 1.0
 one_shot = true
 autostart = false
 
+[node name="cd_label" type="Label" parent="panel/ability_container/ability_2"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 15.0
+margin/bottom = 15.0
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
 [node name="ability_3" type="TextureButton" parent="panel/ability_container"]
 
 rect/min_size = Vector2( 50, 50 )
@@ -349,8 +380,7 @@ margin/bottom = 60.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 7 )
-textures/pressed = ExtResource( 5 )
+textures/normal = ExtResource( 6 )
 params/resize_mode = 1
 params/stretch_mode = 1
 
@@ -359,7 +389,7 @@ params/stretch_mode = 1
 visibility/self_opacity = 0.8
 anchor/right = 1
 anchor/bottom = 1
-focus/ignore_mouse = false
+focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
@@ -385,9 +415,24 @@ wait_time = 1.0
 one_shot = true
 autostart = false
 
+[node name="cd_label" type="Label" parent="panel/ability_container/ability_3"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 15.0
+margin/bottom = 15.0
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
 [node name="respawn" type="Label" parent="."]
 
 process/pause_mode = 1
+editor/display_folded = true
 visibility/visible = false
 focus/ignore_mouse = true
 focus/stop_mouse = true
@@ -408,11 +453,5 @@ process_mode = 1
 wait_time = 1.0
 one_shot = false
 autostart = false
-
-[connection signal="timeout" from="message_timer" to="." method="_on_message_timer_timeout"]
-
-[connection signal="timeout" from="next_wave/next_wave_timer" to="." method="_on_next_wave_timer_timeout"]
-
-[connection signal="timeout" from="respawn/timer" to="." method="_on_timer_timeout"]
 
 

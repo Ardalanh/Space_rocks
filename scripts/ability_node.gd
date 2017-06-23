@@ -5,13 +5,13 @@ signal ability_casted
 onready var timer_container = get_node("timer_container")
 
 var abilities = {}
-
 var timers = {}
-#var cooldowns = {}
 var levels = {}
 const MAX_LVL = 4
 
 func _ready():
+	var hud = get_tree().get_nodes_in_group("hud")[0]
+	self.connect("ability_casted", hud, "_on_ability_casted")
 	for i in range(1,4):
 		var name = "ability_%d"%i
 		abilities[name] = load("res://scenes/abilities/ability_%d.tscn"%i)
@@ -22,7 +22,6 @@ func _ready():
 
 func cast(index):
 	var name = "ability_%d"%index
-	print(timers[name].get_time_left())
 	if timers[name].get_time_left() == 0:
 		var a = abilities[name].instance()
 		add_child(a)

@@ -39,18 +39,16 @@ func _ready():
 	screen_size = OS.get_window_size()
 	set_fixed_process(true)
 	set_process(true)
-	set_process_input(true)
+	set_process_unhandled_input(true)
 
-func _input(event):
+
+func _unhandled_input(event):
 	if event.is_action_pressed("player_ability_1"):
-		ability.cast(1)
-#		cast_ability(1)
+		cast_ability(1)
 	if event.is_action_pressed("player_ability_2"):
-		ability.cast(2)
-#		cast_ability(2)
+		cast_ability(2)
 	if event.is_action_pressed("player_ability_3"):
-		ability.cast(3)
-#		cast_ability(3)
+		cast_ability(3)
 	if event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
 	if event.is_action_pressed("player_shoot"):
@@ -106,10 +104,6 @@ func shoot():
 	shoot_sound.play("shoot1", true)
 
 func take_damage(damage):
-#	var damage_color = CanvasModulate.new()
-#	damage_color.set_as_toplevel(true)
-#	damage_color.set_color(Color(200,0,0,0.9))
-#	add_child(damage_color)
 	health_point = health_point - damage
 	if health_point <= 0 and not dead:
 		dead()
@@ -120,7 +114,6 @@ func dead():
 	set_fixed_process(false)
 	set_process_unhandled_input(false)
 	hide()
-#	get_node("collision").set_trigger(true)
 	set_layer_mask(0)
 	set_collision_mask(0)
 	get_node("camera").clear_current()
@@ -136,7 +129,6 @@ func alive():
 	shoot_key_pressed = false
 	_ready()
 	self.show() #default function
-#	get_node("collision").set_trigger(false)
 	set_layer_mask(3)
 	set_collision_mask(3)
 	emit_signal("player_alive")
@@ -152,17 +144,7 @@ func move_camera(mouse_dist, delta):
 	player_camera.set_offset(camera_offset)
 
 func cast_ability(index):
-	var ability = generate_ability(index)
-	bullet_container.add_child(ability)
-	ability.__init__(self)
-
-func generate_ability(index):
-	if index == 1:
-		return ability_1.instance()
-	elif index == 2:
-		return ability_2.instance()
-	elif index == 3:
-		return ability_3.instance()
+	ability.cast(index)
 
 func set_bullet_rate(num):
 	bullet_rate.set_wait_time(num)

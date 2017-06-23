@@ -75,7 +75,7 @@ func set_planet_hp(hp):
 	planet_hp.set_value(hp)
 	get_node("panel/planet_hp/hp").set_text(str(hp))
 
-func _on_ability_node_ability_casted(name, cd):
+func _on_ability_casted(name, cd):
 	var ability = ability_container.get_node(name)
 	ability.get_node("cd_timer").set_wait_time(cd)
 	ability.get_node("cd_timer").start()

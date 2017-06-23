@@ -4,7 +4,7 @@ onready var timer = get_node("duration")
 
 var current_level = 0
 var cooldown = [6, 5, 4, 3] setget ,get_cooldown
-var MAX_VEL = [2500, 3000, 3500, 4000]
+var MAX_VEL = [2500, 3000, 3500, 4000] # THis is the speed of the ability
 var BLINK_DIST = [300, 400, 500, 600]
 
 var fade = false
@@ -19,7 +19,7 @@ var texture
 var my_sprite
 
 func __init__(player_obj, level):
-	current_level = level
+	current_level = level - 1
 	player = player_obj
 	player_layers = player.get_layer_mask()
 	player_collisions = player.get_collision_mask()

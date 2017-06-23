@@ -3,9 +3,8 @@ extends Area2D
 var player
 var player_rot
 var duration = [2,3,4,5]
-
-var current_level = 0
 var cooldown = [10,10,10,10] setget ,get_cooldown
+var current_level = 0
 
 onready var animation = get_node("animation")
 onready var timer = get_node("timer")
