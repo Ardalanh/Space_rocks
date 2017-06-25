@@ -91,3 +91,4 @@ func _on_player_player_dead(time):
 
 func _on_player_player_alive():
 	get_node("camera").clear_current()
+

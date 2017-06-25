@@ -63,3 +63,4 @@ func _on_planet_planet_pos_signal(planet_p, planet_r):
 
 func enemy_factory_generate(index):
 	return load("res://scenes/creep_scenes/enemy%d.tscn"%index).instance()
+
