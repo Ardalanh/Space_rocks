@@ -48,7 +48,6 @@ tracks/0/keys = {
 "enemy",
 ]]
 
-transform/pos = Vector2( 453.611, 199.158 )
 transform/scale = Vector2( 0.5, 0.5 )
 input/pickable = false
 shapes/0/shape = SubResource( 1 )

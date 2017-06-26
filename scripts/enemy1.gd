@@ -24,7 +24,7 @@ const ROT_SPEED = 5
 const STOPING_FRICTION = 2
 const FLEE_FORCE = 50
 
-var pos = Vector2()
+var pos = Vector2(0, 0)
 var vel = Vector2()
 var acc = Vector2(0, 0)
 
@@ -38,15 +38,18 @@ var health_point = 1000
 export var damage = 4
 var state = _States.follow_planet
 
+func _ready():
+	HP_BAR.set_val(health_point)
+
 func start_at(pos, planet_p, planet_r):
 	randomize()
 #	damage += randi()%5
-	HP_BAR.set_val(health_point)
 	set_pos(pos)
 	set_fixed_process(true)
 	planet_pos = planet_p
 	planet_radius = planet_r
 	look_at(planet_pos)
+	vel = (planet_pos - pos).normalized() * MAX_VEL
 
 func _fixed_process(delta):
 	if state == _States.follow_planet:

@@ -25,7 +25,7 @@
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
-radius = 240.971
+radius = 1650.0
 
 [sub_resource type="SpriteFrames" id=2]
 
@@ -44,8 +44,8 @@ input/pickable = false
 shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
-collision/layers = 1
-collision/mask = 1
+collision/layers = 5
+collision/mask = 5
 constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
@@ -57,9 +57,10 @@ __meta__ = {
 
 [node name="sprite" type="AnimatedSprite" parent="."]
 
+transform/scale = Vector2( 7, 7 )
 frames = SubResource( 2 )
 animation = "default"
-frame = 15
+frame = 1
 playing = true
 
 [node name="collision" type="CollisionShape2D" parent="."]
