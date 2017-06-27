@@ -25,7 +25,6 @@ func _on_animation_tween_complete( object, key ):
 	queue_free()
 
 func _on_player_bullet_body_enter( body ):
-	if body.is_in_group("enemy"):
+	if body.is_in_group("enemy_target"):
 		queue_free()
 		body.take_damage(damage)
-		body.vel += vel.normalized() * 100

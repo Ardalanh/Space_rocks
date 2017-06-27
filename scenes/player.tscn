@@ -10,7 +10,7 @@
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
-radius = 44.0
+radius = 49.3166
 
 [sub_resource type="SampleLibrary" id=2]
 
@@ -41,8 +41,8 @@ border_blend = true
 draw_bg = true
 
 [node name="player" type="KinematicBody2D" groups=[
-"player_obj",
 "player",
+"player_obj",
 ]]
 
 transform/scale = Vector2( 0.3, 0.3 )
@@ -67,7 +67,6 @@ flip_v = true
 
 [node name="collision" type="CollisionShape2D" parent="."]
 
-visibility/visible = false
 transform/pos = Vector2( 0, -7 )
 shape = SubResource( 1 )
 trigger = false
@@ -131,7 +130,6 @@ script/script = ExtResource( 6 )
 
 [node name="control" type="Control" parent="."]
 
-editor/display_folded = true
 anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true

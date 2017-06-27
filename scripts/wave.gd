@@ -57,7 +57,6 @@ func spawn():
 		number_of_units -= 1
 		i += 1
 
-
 func _on_wave_timeout():
 	set_process(true)
 	i = 0

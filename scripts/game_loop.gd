@@ -75,6 +75,7 @@ func _on_restart_timer_timeout():
 	global.new_game()
 
 func _on_wave_wave_done():
+	global.wave_num += 1
 	state = _States.spawn
 
 func _on_planet_Dead():

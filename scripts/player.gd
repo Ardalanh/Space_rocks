@@ -86,6 +86,7 @@ func _fixed_process(delta):
 
 	if vel.length() > MAX_VEL:
 		vel = vel.normalized() * MAX_VEL #max
+
 	var motion = move(vel * delta)
 	if is_colliding():
 		var coll = get_collider()

@@ -1,12 +1,8 @@
-[gd_scene load_steps=13 format=1]
+[gd_scene load_steps=8 format=1]
 
-[ext_resource path="res://scenes/planet.tscn" type="PackedScene" id=1]
-[ext_resource path="res://art/PNG/portal/Voretx_001.tex" type="Texture" id=2]
-[ext_resource path="res://art/PNG/portal/Voretx_002.tex" type="Texture" id=3]
-[ext_resource path="res://art/PNG/portal/Voretx_003.tex" type="Texture" id=4]
-[ext_resource path="res://art/PNG/portal/Voretx_004.tex" type="Texture" id=5]
-[ext_resource path="res://art/PNG/portal/Voretx_005.tex" type="Texture" id=6]
-[ext_resource path="res://scenes/parallax.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scripts/map.gd" type="Script" id=1]
+[ext_resource path="res://scenes/planet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/parallax.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -28,18 +24,11 @@ extents = Vector2( 50, 5000 )
 custom_solver_bias = 0.0
 extents = Vector2( 50, 5000 )
 
-[sub_resource type="SpriteFrames" id=5]
-
-animations = [ {
-"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ) ],
-"loop": true,
-"name": "portal",
-"speed": 10.0
-} ]
-
 [node name="map" type="Node2D"]
 
-[node name="planet" parent="." instance=ExtResource( 1 )]
+script/script = ExtResource( 1 )
+
+[node name="planet" parent="." instance=ExtResource( 2 )]
 
 z/z = -1
 
@@ -131,68 +120,8 @@ _update_shape_index = 0
 "portals",
 ]]
 
-[node name="portal_1" type="StaticBody2D" parent="portals"]
-
-transform/pos = Vector2( 0, -4000 )
-input/pickable = false
-collision/layers = 1
-collision/mask = 1
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
-
-[node name="sprite" type="AnimatedSprite" parent="portals/portal_1"]
-
-transform/scale = Vector2( 2, 2 )
 z/z = -1
-z/relative = false
-frames = SubResource( 5 )
-animation = "portal"
-frame = 3
-playing = true
 
-[node name="portal_2" type="StaticBody2D" parent="portals"]
-
-transform/pos = Vector2( 3464, 2000 )
-input/pickable = false
-collision/layers = 1
-collision/mask = 1
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
-
-[node name="sprite" type="AnimatedSprite" parent="portals/portal_2"]
-
-transform/scale = Vector2( 2, 2 )
-z/z = -1
-z/relative = false
-frames = SubResource( 5 )
-animation = "portal"
-playing = true
-
-[node name="portal_3" type="StaticBody2D" parent="portals"]
-
-transform/pos = Vector2( -3464, 2000 )
-input/pickable = false
-collision/layers = 1
-collision/mask = 1
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
-
-[node name="sprite" type="AnimatedSprite" parent="portals/portal_3"]
-
-transform/scale = Vector2( 2, 2 )
-z/z = -1
-z/relative = false
-frames = SubResource( 5 )
-animation = "portal"
-frame = 3
-playing = true
-
-[node name="parallax" parent="." instance=ExtResource( 7 )]
+[node name="parallax" parent="." instance=ExtResource( 3 )]
 
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=1]
 
 [ext_resource path="res://scripts/mini_map.gd" type="Script" id=1]
-[ext_resource path="res://art/Map1.tex" type="Texture" id=2]
+[ext_resource path="res://art/mini_map/bg_001.tex" type="Texture" id=2]
 
 [node name="mini_map" type="Control"]
 
@@ -53,7 +53,7 @@ drag_margin/top = 0.2
 drag_margin/right = 0.2
 drag_margin/bottom = 0.2
 
-[node name="map_texture" type="Sprite" parent="vp"]
+[node name="bg" type="Sprite" parent="vp"]
 
 texture = ExtResource( 2 )
 
