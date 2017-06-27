@@ -81,6 +81,8 @@ __meta__ = {
 
 [connection signal="planet_pos_signal" from="map/planet" to="wave" method="_on_planet_planet_pos_signal"]
 
+[connection signal="new_enemy" from="wave" to="mini_map" method="_on_wave_new_enemy"]
+
 [connection signal="number_of_enemies" from="wave" to="hud" method="_on_wave_number_of_enemies"]
 
 [connection signal="wave_done" from="wave" to="." method="_on_wave_wave_done"]

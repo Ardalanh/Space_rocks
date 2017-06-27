@@ -62,7 +62,6 @@ __meta__ = {
 "_edit_group_": true
 }
 bullet = ExtResource( 2 )
-damage = 4
 
 [node name="sprite" type="Sprite" parent="."]
 

@@ -11,7 +11,7 @@ enum _States{follow_planet,
 
 export (PackedScene) var bullet
 onready var bullet_container = get_node("bullet_container")
-onready var bullet_rate = get_node("bullet_rate")
+onready var bullet_rate_timer = get_node("bullet_rate")
 onready var HP_BAR = get_node("control/hp_bar")
 onready var action_timer = get_node("action")
 onready var animation = get_node("animation")
@@ -34,20 +34,26 @@ var main_target
 var planet_pos
 var planet_radius
 
+var level = 0
 var health_point = 1000
-export var damage = 4
+var damage = 20
+var bullet_rate = 0.5
 var state = _States.follow_planet
 
 func _ready():
+	health_point = 1000 + level*100
+	damage = 20 + level*10
+	bullet_rate = 1/(1 + level*0.6)
 	HP_BAR.set_val(health_point)
 
-func start_at(pos, planet_p, planet_r):
+func start_at(pos, planet_p, planet_r, lvl):
 	randomize()
 #	damage += randi()%5
 	set_pos(pos)
 	set_fixed_process(true)
 	planet_pos = planet_p
 	planet_radius = planet_r
+	level = lvl
 	look_at(planet_pos)
 	vel = (planet_pos - pos).normalized() * MAX_VEL
 
@@ -192,8 +198,8 @@ func steer(target, target_raduis=0):
 	acc = steer
 
 func shoot():
-	if bullet_rate.get_time_left() == 0:
-		bullet_rate.start()
+	if bullet_rate_timer.get_time_left() == 0:
+		bullet_rate_timer.start()
 		var b = bullet.instance()
 		bullet_container.add_child(b)
 		b.damage = damage

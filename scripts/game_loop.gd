@@ -43,7 +43,7 @@ func wait_state():
 	pass
 
 func spawn_state():
-	if global.wave_num < 3:
+	if global.wave_num < 10:
 		HUD.next_wave()
 		state = _States.wait
 	else:

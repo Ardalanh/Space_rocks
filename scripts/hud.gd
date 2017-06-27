@@ -53,8 +53,7 @@ func _on_message_timer_timeout():
 	get_node("message").set_text('')
 
 func _on_next_wave_timer_timeout():
-	global.wave_num += 1
-	show_message("Wave %s" % global.wave_num)
+	show_message("Wave %s" % (global.wave_num +1))
 	wave_label.hide()
 	emit_signal("wave_timeout")
 

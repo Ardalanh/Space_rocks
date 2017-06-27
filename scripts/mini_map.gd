@@ -3,10 +3,10 @@ extends Control
 onready var vp = get_node("vp")
 
 var player
-var enemy_sprite = load("res://art/mini_map/enemy_001.tex")
-var planet_sprite = load("res://art/mini_map/planet_001.tex")
-var player_sprite = load("res://art/mini_map/player_001.tex")
-var portal_sprite = load("res://art/mini_map/Voretx_001.tex")
+onready var enemy_sprite = get_node("enemy")
+onready var planet_sprite = get_node("vp/planet")
+onready var player_sprite = get_node("vp/player")
+onready var portal_sprite = get_node("portal")
 
 var sprites = {}
 var enemy_sprites = {}
@@ -14,25 +14,19 @@ var enemy_sprites = {}
 func _ready():
 	var portals = get_tree().get_nodes_in_group("portals")[0].get_children()
 	for p in portals:
-		var s = Sprite.new()
-		s.set_texture(portal_sprite)
+		var s = portal_sprite.duplicate()
+		s.show()
 		vp.add_child(s)
 		s.set_pos(p.get_pos() * 0.015)
-		sprites[p.get_instance_ID()] = s
-
-	player = get_tree().get_nodes_in_group("player_obj")[0]
-	var s = Sprite.new()
-	s.set_texture(player_sprite)
-	vp.add_child(s)
-	s.set_pos(player.get_pos() * 0.015)
-	sprites[player.get_instance_ID()] = s
 
 	var planet = get_tree().get_nodes_in_group("planet")[0]
-	s = Sprite.new()
-	s.set_texture(planet_sprite)
-	vp.add_child(s)
-	s.set_pos(planet.get_pos() * 0.015)
-	sprites[planet.get_instance_ID()] = s
+	planet_sprite.show()
+	planet_sprite.set_pos(planet.get_pos() * 0.015)
+
+	player = get_tree().get_nodes_in_group("player_obj")[0]
+	player_sprite.show()
+	player_sprite.set_pos(player.get_pos() * 0.015)
+	sprites[player] = player_sprite
 
 	set_as_toplevel(true)
 	set_process(true)
@@ -40,20 +34,21 @@ func _ready():
 func _process(delta):
 	set_pos(Vector2(get_viewport_transform().inverse().get_origin().x, get_viewport_transform().inverse().get_origin().y) + Vector2(0, get_viewport_rect().size.y - 150))
 
-#	for e in get_tree().get_nodes_in_group("enemy"):
-#		var ID = e.get_instance_ID()
-#		if ID in sprites.values():
-#			enemy_sprites[ID].set_pos(e.get_pos() * 0.015)
-#			enemy_sprites[ID].set_rot(e.get_rot() + PI)
-#		else:
-#			var s = Sprite.new()
-#			s.set_texture(enemy_sprite)
-#			vp.add_child(s)
-#			s.set_pos(e.get_pos() * 0.015)
-#			s.set_scale(Vector2(0.2, 0.2))
-#			enemy_sprites[ID] = s
+	for obj in sprites.keys():
+		if weakref(obj).get_ref():
+			sprites[obj].set_pos(obj.get_pos() * 0.015)
+			sprites[obj].set_rot(obj.get_rot() + PI)
+		else:
+			sprites[obj].queue_free()
+			sprites.erase(obj)
 
-	sprites[player.get_instance_ID()].set_pos(player.get_pos() * 0.015)
-	sprites[player.get_instance_ID()].set_rot(player.get_rot() + PI)
 #	var camera = get_node("vp/cam")
 #	camera.set_pos(player.get_pos() * 0.015)
+
+
+func _on_wave_new_enemy(e):
+	var s = enemy_sprite.duplicate()
+	s.show()
+	vp.add_child(s)
+	s.set_pos(e.get_pos() * 0.015)
+	sprites[e] = s

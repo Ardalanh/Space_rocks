@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://scripts/mini_map.gd" type="Script" id=1]
 [ext_resource path="res://art/mini_map/bg_001.tex" type="Texture" id=2]
+[ext_resource path="res://art/mini_map/player_001.tex" type="Texture" id=3]
+[ext_resource path="res://art/mini_map/planet_001.tex" type="Texture" id=4]
+[ext_resource path="res://art/mini_map/enemy_001.tex" type="Texture" id=5]
+[ext_resource path="res://art/mini_map/Voretx_001.tex" type="Texture" id=6]
 
 [node name="mini_map" type="Control"]
 
@@ -56,5 +60,30 @@ drag_margin/bottom = 0.2
 [node name="bg" type="Sprite" parent="vp"]
 
 texture = ExtResource( 2 )
+
+[node name="player" type="Sprite" parent="vp"]
+
+visibility/visible = false
+transform/pos = Vector2( 0, 450 )
+transform/scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="planet" type="Sprite" parent="vp"]
+
+visibility/visible = false
+transform/pos = Vector2( 0, 450 )
+transform/scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 4 )
+
+[node name="enemy" type="Sprite" parent="."]
+
+visibility/visible = false
+transform/scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 5 )
+
+[node name="portal" type="Sprite" parent="."]
+
+visibility/visible = false
+texture = ExtResource( 6 )
 
 

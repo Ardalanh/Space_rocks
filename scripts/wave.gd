@@ -2,6 +2,7 @@ extends Node2D
 
 signal wave_done
 signal number_of_enemies
+signal new_enemy
 
 var explosion = preload("res://scenes/explosion.tscn")
 var enemy_1 = preload("res://scenes/creep_scenes/enemy1.tscn")
@@ -50,15 +51,17 @@ func no_enemies():
 func spawn():
 	if spawn_rate.get_time_left() == 0 and number_of_units > 0:
 		var e = enemy_1.instance()
-		e.start_at(spawn_pos[i%3], planet_pos, planet_radius)
+		e.start_at(spawn_pos[i%3], planet_pos, planet_radius, global.wave_num)
 		e.connect("explode", self, "_on_enemy_explode")
 		spawn_rate.start()
 		enemy_container.add_child(e)
 		number_of_units -= 1
 		i += 1
+		emit_signal("new_enemy", e)
 
 func _on_wave_timeout():
 	set_process(true)
+	number_of_units = 18
 	i = 0
 
 func _on_planet_planet_pos_signal(planet_p, planet_r):

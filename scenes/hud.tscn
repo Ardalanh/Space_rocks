@@ -452,6 +452,10 @@ wait_time = 1.0
 one_shot = false
 autostart = false
 
+[connection signal="timeout" from="message_timer" to="." method="_on_message_timer_timeout"]
+
 [connection signal="timeout" from="next_wave/next_wave_timer" to="." method="_on_next_wave_timer_timeout"]
+
+[connection signal="timeout" from="respawn/timer" to="." method="_on_timer_timeout"]
 
 
