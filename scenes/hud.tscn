@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=1]
+[gd_scene load_steps=11 format=1]
 
 [ext_resource path="res://scripts/hud.gd" type="Script" id=1]
 [ext_resource path="res://font/font1.fnt" type="BitmapFont" id=2]
@@ -40,6 +40,19 @@ content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
 
+[sub_resource type="StyleBoxFlat" id=4]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+bg_color = Color( 0.96875, 1, 0, 1 )
+light_color = Color( 0.8, 0.8, 0.8, 1 )
+dark_color = Color( 0.8, 0.8, 0.8, 1 )
+border_size = 0
+border_blend = true
+draw_bg = true
+
 [node name="hud" type="CanvasLayer" groups=[
 "hud",
 ]]
@@ -56,8 +69,8 @@ script/script = ExtResource( 1 )
 anchor/left = 1
 anchor/right = 1
 hint/tooltip = "Number of enemies remained."
-focus/ignore_mouse = false
-focus/stop_mouse = true
+focus/ignore_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 80.0
@@ -77,7 +90,7 @@ max_lines_visible = -1
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = true
-focus/stop_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 0
 size_flags/vertical = 0
 margin/left = 0.0
@@ -105,8 +118,8 @@ visibility/visible = false
 visibility/opacity = 0.5
 anchor/right = 1
 anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
+focus/ignore_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
@@ -120,7 +133,7 @@ visibility/blend_mode = 1
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = true
-focus/stop_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
@@ -141,7 +154,7 @@ process/pause_mode = 1
 anchor/left = 2
 anchor/right = 2
 focus/ignore_mouse = true
-focus/stop_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
@@ -168,8 +181,8 @@ autostart = false
 anchor/top = 2
 anchor/right = 1
 anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
+focus/ignore_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
@@ -179,11 +192,10 @@ margin/bottom = 0.0
 
 [node name="planet_hp" type="ProgressBar" parent="panel"]
 
-editor/display_folded = true
 anchor/left = 2
 anchor/right = 2
-focus/ignore_mouse = false
-focus/stop_mouse = true
+focus/ignore_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.27
@@ -205,7 +217,7 @@ percent/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = true
-focus/stop_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
@@ -221,11 +233,10 @@ max_lines_visible = -1
 
 [node name="ability_container" type="HBoxContainer" parent="panel"]
 
-editor/display_folded = true
 anchor/left = 2
 anchor/right = 2
 anchor/bottom = 1
-focus/ignore_mouse = false
+focus/ignore_mouse = true
 focus/stop_mouse = false
 size_flags/horizontal = 0
 size_flags/vertical = 0
@@ -302,6 +313,23 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="lvl_up_mask" type="Panel" parent="panel/ability_container/ability_1"]
+
+visibility/visible = false
+visibility/self_opacity = 0.3
+visibility/blend_mode = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+custom_styles/panel = SubResource( 4 )
+
 [node name="ability_2" type="TextureButton" parent="panel/ability_container"]
 
 rect/min_size = Vector2( 50, 50 )
@@ -364,6 +392,23 @@ margin/bottom = 15.0
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="lvl_up_mask" type="Panel" parent="panel/ability_container/ability_2"]
+
+visibility/visible = false
+visibility/self_opacity = 0.3
+visibility/blend_mode = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+custom_styles/panel = SubResource( 4 )
 
 [node name="ability_3" type="TextureButton" parent="panel/ability_container"]
 
@@ -428,12 +473,29 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="lvl_up_mask" type="Panel" parent="panel/ability_container/ability_3"]
+
+visibility/visible = false
+visibility/self_opacity = 0.3
+visibility/blend_mode = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+custom_styles/panel = SubResource( 4 )
+
 [node name="respawn" type="Label" parent="."]
 
 process/pause_mode = 1
 visibility/visible = false
 focus/ignore_mouse = true
-focus/stop_mouse = true
+focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0

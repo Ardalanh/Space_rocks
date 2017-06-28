@@ -12,6 +12,9 @@ enum _States{start,
 
 signal player_dead
 signal wave_timeout
+signal player_lvl_up
+
+var there_are_portals = true
 
 var state = _States.start
 var planet_live = true
@@ -43,7 +46,7 @@ func wait_state():
 	pass
 
 func spawn_state():
-	if global.wave_num < 10:
+	if there_are_portals:
 		HUD.next_wave()
 		state = _States.wait
 	else:
@@ -75,6 +78,7 @@ func _on_restart_timer_timeout():
 	global.new_game()
 
 func _on_wave_wave_done():
+	emit_signal("player_lvl_up")
 	global.wave_num += 1
 	state = _States.spawn
 
@@ -88,8 +92,14 @@ func _on_hud_wave_timeout():
 
 func _on_player_player_dead(time):
 	emit_signal("player_dead", time)
+	get_node("mini_map").hide()
 	get_node("camera").make_current()
 
 func _on_player_player_alive():
+	get_node("mini_map").show()
 	get_node("camera").clear_current()
+
+
+func _on_map_no_more_portal():
+	there_are_portals = false
 

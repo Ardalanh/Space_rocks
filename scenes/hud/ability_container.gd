@@ -1,5 +1,7 @@
 extends HBoxContainer
 
+signal player_lvl_up
+
 var buttons = []
 
 func _ready():
@@ -8,6 +10,7 @@ func _ready():
 	for child in get_children():
 		buttons.append(child)
 		child.connect("pressed", player, "cast_ability", [i])
+		child.get_node("lvl_up_mask").connect("input_event", self, "ability_lvl_up", [i])
 		i += 1
 	set_process(true)
 
@@ -24,3 +27,18 @@ func _process(delta):
 		else:
 			cd_mask.hide()
 			cd_label.hide()
+
+func _player_lvl_up_screen():
+	for button in buttons:
+		button.set_ignore_mouse(true)
+		button.set_stop_mouse(false)
+		button.get_node("lvl_up_mask").show()
+
+
+func ability_lvl_up(event, ability_num):
+	if event.is_action_released("mouse_left_click"):
+		emit_signal("player_lvl_up", ability_num)
+		for button in buttons:
+			button.set_ignore_mouse(false)
+			button.set_stop_mouse(true)
+			button.get_node("lvl_up_mask").hide()

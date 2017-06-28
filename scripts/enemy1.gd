@@ -16,6 +16,8 @@ onready var HP_BAR = get_node("control/hp_bar")
 onready var action_timer = get_node("action")
 onready var animation = get_node("animation")
 
+var enemy_1_ability = preload("res://scenes/creep_scenes/enemy_ability_1.tscn")
+
 const MAIN_THRUST = 150
 const MAX_VEL = 300
 const MAIN_TARGET_AGRO_RANGE = 800
@@ -42,8 +44,9 @@ var state = _States.follow_planet
 
 func _ready():
 	health_point = 1000 + level*100
-	damage = 20 + level*10
+	damage = 10 + level*10
 	bullet_rate = 1/(1 + level*0.6)
+	bullet_rate_timer.set_wait_time(bullet_rate)
 	HP_BAR.set_val(health_point)
 
 func start_at(pos, planet_p, planet_r, lvl):
@@ -236,12 +239,9 @@ func _on_action_timeout():
 		state = _States.attack_action
 
 func cast_ability(index):
-	var ability = generate_ability(index)
+	var ability = enemy_1_ability.instance()
 	bullet_container.add_child(ability)
 	ability.__init__(self)
-
-func generate_ability(index):
-	return load("res://scenes/creep_scenes/enemy_ability_%d.tscn"%index).instance()
 
 func play_animation():
 	animation.set_speed(1)

@@ -13,8 +13,15 @@ script/script = ExtResource( 1 )
 
 [node name="hud" parent="." instance=ExtResource( 2 )]
 
+editor/display_folded = true
+
+[node name="ability_container" parent="hud/panel"]
+
+editor/display_folded = true
+
 [node name="player" parent="." instance=ExtResource( 3 )]
 
+editor/display_folded = true
 transform/pos = Vector2( 2000, -180.354 )
 
 [node name="map" parent="." instance=ExtResource( 4 )]
@@ -65,13 +72,19 @@ __meta__ = {
 
 [connection signal="player_dead" from="." to="hud" method="_on_player_dead"]
 
+[connection signal="player_lvl_up" from="." to="hud/panel/ability_container" method="_player_lvl_up_screen"]
+
 [connection signal="wave_timeout" from="." to="wave" method="_on_wave_timeout"]
 
 [connection signal="wave_timeout" from="hud" to="." method="_on_hud_wave_timeout"]
 
+[connection signal="player_lvl_up" from="hud/panel/ability_container" to="player/ability_node" method="level_up_ability"]
+
 [connection signal="player_alive" from="player" to="." method="_on_player_player_alive"]
 
 [connection signal="player_dead" from="player" to="." method="_on_player_player_dead"]
+
+[connection signal="no_more_portal" from="map" to="." method="_on_map_no_more_portal"]
 
 [connection signal="Dead" from="map/planet" to="." method="_on_planet_Dead"]
 
@@ -90,4 +103,6 @@ __meta__ = {
 [connection signal="timeout" from="restart_timer" to="." method="_on_restart_timer_timeout"]
 
 
+[editable path="hud"]
+[editable path="player"]
 [editable path="map"]

@@ -25,8 +25,8 @@ var respawn_time = 3
 var camera_offset = Vector2()
 onready var respawn_pos = get_pos()
 
-var MAIN_THRUST = 1200
-var MAX_VEL = 300
+var MAIN_THRUST = 800
+var MAX_VEL = 600
 var damage = 500
 var MAX_HP = 500
 var health_reg = 0
@@ -152,3 +152,4 @@ func set_bullet_rate(num):
 
 func get_bullet_rate():
 	return bullet_rate.get_wait_time()
+

@@ -19,7 +19,6 @@ var planet_radius
 var r = 1500
 var theta = 0
 var enemy
-var i = 0
 
 func _ready():
 	var portal_nodes = get_tree().get_nodes_in_group("portals")[0]
@@ -28,10 +27,8 @@ func _ready():
 
 
 func _process(delta):
-	spawn()
 	emit_signal("number_of_enemies", enemy_container.get_child_count())
 	if no_enemies():
-		i = 0
 		emit_signal("wave_done")
 		set_process(false)
 
@@ -49,20 +46,20 @@ func no_enemies():
 		return false
 
 func spawn():
-	if spawn_rate.get_time_left() == 0 and number_of_units > 0:
+#	if spawn_rate.get_time_left() == 0 and number_of_units > 0:
+	for i in range(number_of_units):
 		var e = enemy_1.instance()
 		e.start_at(spawn_pos[i%3], planet_pos, planet_radius, global.wave_num)
 		e.connect("explode", self, "_on_enemy_explode")
 		spawn_rate.start()
 		enemy_container.add_child(e)
-		number_of_units -= 1
-		i += 1
-		emit_signal("new_enemy", e)
+		emit_signal("new_enemy", e) #to minimap
+		yield(spawn_rate, "timeout")
+
+	set_process(true)
 
 func _on_wave_timeout():
-	set_process(true)
-	number_of_units = 18
-	i = 0
+	spawn()
 
 func _on_planet_planet_pos_signal(planet_p, planet_r):
 	planet_pos = planet_p
