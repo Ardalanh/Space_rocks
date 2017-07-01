@@ -35,4 +35,4 @@ func level_up_ability(index):
 	var name = "ability_%d"%index
 	if levels[name] < MAX_LVL:
 		levels[name] += 1
-		print(levels)
+		get_parent().level += 1

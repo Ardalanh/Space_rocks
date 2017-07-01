@@ -16,7 +16,7 @@
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
-radius = 42.3892
+radius = 57.7507
 
 [sub_resource type="SpriteFrames" id=2]
 
@@ -94,17 +94,16 @@ script/script = ExtResource( 1 )
 
 [node name="animsprite" type="AnimatedSprite" parent="."]
 
-transform/scale = Vector2( 0.3, 0.3 )
+transform/scale = Vector2( 0.4, 0.4 )
 z/z = 4
 z/relative = false
 frames = SubResource( 2 )
 animation = "shield"
-frame = 6
+frame = 3
 playing = true
 
 [node name="collision" type="CollisionShape2D" parent="."]
 
-visibility/visible = false
 visibility/opacity = 0.8
 shape = SubResource( 1 )
 trigger = false

@@ -24,6 +24,10 @@ editor/display_folded = true
 editor/display_folded = true
 transform/pos = Vector2( 2000, -180.354 )
 
+[node name="lightning" parent="player"]
+
+frame = 10
+
 [node name="map" parent="." instance=ExtResource( 4 )]
 
 editor/display_folded = true

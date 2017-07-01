@@ -21,7 +21,7 @@ func __init__(player_obj, level):
 	player.set_bullet_rate( player.get_bullet_rate() * bullet_rate_multiple[current_level])
 	player.health_reg += regenration[current_level]
 
-	player_sprite = player.get_node("sprite")
+	player_sprite = player.get_node("body")
 	player_modulate = player_sprite.get_modulate()
 	player_sprite.set_modulate(Color(210,255,0))
 

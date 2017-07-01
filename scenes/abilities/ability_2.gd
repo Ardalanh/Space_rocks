@@ -38,7 +38,7 @@ func __init__(player_obj, level):
 	timer.start()
 
 	set_pos(player.get_pos())
-	texture = player.get_node("sprite").get_texture()
+	texture = player.get_node("body").get_texture()
 
 	set_fixed_process(true)
 	set_process(true)
@@ -68,7 +68,7 @@ func set_effect():
 	my_sprite.set_modulate(Color(200,0,0))
 	my_sprite.set_opacity(0.5)
 	my_sprite.set_rot(player_rot - PI/2)
-	my_sprite.set_scale(player.get_scale())
+	my_sprite.set_scale(Vector2(0.5, 0.5))
 
 func _on_duration_timeout():
 	set_fixed_process(false)

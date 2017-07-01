@@ -21,6 +21,7 @@ var theta = 0
 var enemy
 
 func _ready():
+	randomize()
 	var portal_nodes = get_tree().get_nodes_in_group("portals")[0]
 	for portal in portal_nodes.get_children():
 		spawn_pos.append(portal.get_global_pos())
@@ -49,7 +50,8 @@ func spawn():
 #	if spawn_rate.get_time_left() == 0 and number_of_units > 0:
 	for i in range(number_of_units):
 		var e = enemy_1.instance()
-		e.start_at(spawn_pos[i%3], planet_pos, planet_radius, global.wave_num)
+		var pos = spawn_pos[i%3] + Vector2(rand_range(-20,20),rand_range(-20,20))
+		e.start_at( pos , planet_pos, planet_radius, global.wave_num)
 		e.connect("explode", self, "_on_enemy_explode")
 		spawn_rate.start()
 		enemy_container.add_child(e)

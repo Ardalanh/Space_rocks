@@ -69,7 +69,6 @@ texture = ExtResource( 3 )
 
 [node name="collision" type="CollisionShape2D" parent="."]
 
-visibility/visible = false
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
@@ -84,6 +83,13 @@ transform/pos = Vector2( 0, 40 )
 
 process_mode = 1
 wait_time = 0.5
+one_shot = true
+autostart = false
+
+[node name="agro_timer" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 5.0
 one_shot = true
 autostart = false
 

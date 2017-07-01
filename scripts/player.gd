@@ -13,6 +13,8 @@ onready var shoot_sound = get_node("shoot_sound")
 onready var player_camera = get_node("camera")
 onready var HP_BAR = get_node("control/hp_bar")
 onready var ability = get_node("ability_node")
+onready var animation = get_node("moving_animations")
+onready var gun_anim = get_node("gun_anim")
 
 var screen_size
 var rot = 0
@@ -23,6 +25,7 @@ var shoot_key_pressed = false
 var dead = false
 var respawn_time = 3
 var camera_offset = Vector2()
+var alter_gun = 1
 onready var respawn_pos = get_pos()
 
 var MAIN_THRUST = 800
@@ -31,12 +34,16 @@ var damage = 500
 var MAX_HP = 500
 var health_reg = 0
 var health_point
+var level = 1
 
 func _ready():
 	health_point = MAX_HP
 	HP_BAR.set_max(MAX_HP)
 	HP_BAR.set_val(health_point)
 	screen_size = OS.get_window_size()
+
+	animation.play("idle")
+
 	set_fixed_process(true)
 	set_process(true)
 	set_process_unhandled_input(true)
@@ -45,14 +52,24 @@ func _ready():
 func _unhandled_input(event):
 	if event.is_action_pressed("player_ability_1"):
 		cast_ability(1)
-	if event.is_action_pressed("player_ability_2"):
+	elif event.is_action_pressed("player_ability_2"):
 		cast_ability(2)
-	if event.is_action_pressed("player_ability_3"):
+	elif event.is_action_pressed("player_ability_3"):
 		cast_ability(3)
-	if event.is_action_released("player_shoot"):
+	elif event.is_action_released("player_shoot"):
 		shoot_key_pressed = false
-	if event.is_action_pressed("player_shoot"):
+	elif event.is_action_pressed("player_shoot"):
 		shoot_key_pressed = true
+
+	elif event.is_action_pressed("player_thrust"):
+		animation.play("thrusting")
+	elif event.is_action_released("player_thrust"):
+		animation.play("thrust_to_idle")
+	elif event.is_action_pressed("player_thrust_rev"):
+		animation.play("stoping")
+	elif event.is_action_released("player_thrust_rev"):
+		animation.play("stop_to_idle")
+
 
 func _process(delta):
 	screen_size = get_viewport_rect().size
@@ -97,12 +114,23 @@ func _fixed_process(delta):
 		move(n.slide(motion))
 
 func shoot():
+	var init_angel = get_rot()
+	if alter_gun == 1:
+		alter_gun = 2
+		init_angel += 0.03
+	else:
+		alter_gun = 1
+		init_angel -= 0.03
+	var gun = "gun_%d"%alter_gun
+	gun_anim.play(gun)
+
 	bullet_rate.start()
 	var b = bullet.instance()
 	bullet_container.add_child(b)
-	b.start_at(get_rot(), get_node("gun").get_global_pos())
-	b.damage = damage
+	b.start_at(init_angel, get_node(gun).get_global_pos())
+	b.damage = damage + level*50
 	shoot_sound.play("shoot1", true)
+
 
 func take_damage(damage):
 	health_point = health_point - damage

@@ -14,6 +14,7 @@ onready var bullet_container = get_node("bullet_container")
 onready var bullet_rate_timer = get_node("bullet_rate")
 onready var HP_BAR = get_node("control/hp_bar")
 onready var action_timer = get_node("action")
+onready var agro_timer = get_node("agro_timer")
 onready var animation = get_node("animation")
 
 var enemy_1_ability = preload("res://scenes/creep_scenes/enemy_ability_1.tscn")
@@ -35,17 +36,20 @@ var near_enemies_list = []
 var main_target
 var planet_pos
 var planet_radius
+var player
 
-var level = 0
-var health_point = 1000
-var damage = 20
-var bullet_rate = 0.5
+var level
+var health_point
+var damage
+var got_hit = false
+var bullet_rate
 var state = _States.follow_planet
 
 func _ready():
-	health_point = 1000 + level*100
-	damage = 10 + level*10
-	bullet_rate = 1/(1 + level*0.6)
+	player = get_tree().get_nodes_in_group("player_obj")[0]
+	health_point = 1000 + level*50
+	damage = 5 + level*5
+	bullet_rate = 1/(1 + level*0.8)
 	bullet_rate_timer.set_wait_time(bullet_rate)
 	HP_BAR.set_val(health_point)
 
@@ -90,6 +94,13 @@ func _fixed_process(delta):
 		flee_dir = flee_dir.normalized()
 		e.vel += flee_dir * FLEE_FORCE/flee_dist
 
+#if this gets hit, command every near enemy to aggro player
+	if got_hit:
+		if not target_list.has(player):
+			target_list.append(player)
+		got_hit = false
+		state = _States.find_target
+
 func follow_planet_state(delta):
 	steer(planet_pos, planet_radius)
 #	set_acceleration(planet_pos)
@@ -117,6 +128,7 @@ func find_target_state():
 		if target.is_in_group('player'):
 			main_target = target
 	state = _States.chase_target
+	agro_timer.start()
 
 func chase_target_state(delta):
 	if main_target.dead:
@@ -133,7 +145,7 @@ func chase_target_state(delta):
 	var distance_to_main_target = (main_target_pos - get_pos()).length()
 	if distance_to_main_target < ATTACK_RANGE:
 		state = _States.chase_attack
-	elif distance_to_main_target > MAIN_TARGET_AGRO_RANGE:
+	elif distance_to_main_target > MAIN_TARGET_AGRO_RANGE and agro_timer.get_time_left() == 0:
 		target_list.erase(main_target)
 		main_target = null
 		state = _States.find_target
@@ -189,8 +201,8 @@ func steer(target, target_raduis=0):
 	desired = desired.normalized()
 	if distance_to_target > (ATTACK_RANGE) * 0.6 :
 		desired *= MAX_VEL
-	elif distance_to_target < (ATTACK_RANGE) * 0.3:
-		desired *= ((distance_to_target)  * MAX_VEL * -0.5 / ATTACK_RANGE)
+	elif distance_to_target < (ATTACK_RANGE) * 0.4:
+		desired *= ((distance_to_target)  * MAX_VEL * -0.5)
 	else:
 		acc = -vel * STOPING_FRICTION
 		return 0
@@ -215,6 +227,9 @@ func explode():
 
 func take_damage(damage):
 #	calculat_damage(damage, type_damage, armor_type)# return damage
+	got_hit = true
+	for e in near_enemies_list:
+		e.got_hit = true
 	health_point = health_point - damage
 	HP_BAR.set_val(health_point)
 	if health_point <= 0:
